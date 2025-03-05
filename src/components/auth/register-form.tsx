@@ -52,7 +52,7 @@ export const RegisterForm = () => {
 
   return (
       <CardWrapper
-          headerLabel='register'
+          headerLabel='Cadastrar-se'
           backButtonLabel='Já tenho uma conta'
           backButtonHref='/auth/login'
           //showSocial
@@ -73,7 +73,7 @@ export const RegisterForm = () => {
                                     <Input
                                         {...field}
                                         disabled={isPending}
-                                        placeholder='Denis Oliveira'
+                                        placeholder='(seu nome, não o do personagem)'
                                         type='text'
                                     />
                                 </FormControl>
