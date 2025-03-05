@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/auth-class.iml" filepath="$PROJECT_DIR$/.idea/auth-class.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/mythras-omnibus.iml" filepath="$PROJECT_DIR$/.idea/mythras-omnibus.iml" />
     </modules>
   </component>
 </project>
