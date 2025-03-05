@@ -86,7 +86,7 @@ export const RegisterForm = () => {
                         name="email"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>E-mail (opcional)</FormLabel>
+                                <FormLabel>E-mail</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
