@@ -54,7 +54,7 @@ export const RegisterForm = () => {
       <CardWrapper
           headerLabel='register'
           backButtonLabel='Já tenho uma conta'
-          backButtonHref='/auth/register'
+          backButtonHref='/auth/login'
           //showSocial
       >
         <Form {...form}>
@@ -86,7 +86,7 @@ export const RegisterForm = () => {
                         name="email"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>E-mail (opcional)</FormLabel>
+                                <FormLabel>E-mail</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
