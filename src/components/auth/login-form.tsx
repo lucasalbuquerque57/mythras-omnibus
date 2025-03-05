@@ -30,8 +30,7 @@ export const LoginForm = () => {
   const form = useForm<z.infer<typeof LoginSchema>>({
       resolver: zodResolver(LoginSchema),
       defaultValues: {
-          //email: '',
-          identifier: '',
+          email: '',
           password: '',
       },
   });
@@ -63,9 +62,10 @@ export const LoginForm = () => {
                 className='space-y-6'
             >
                 <div className='space-y-4'>
-                    <FormField
+                    {/*// TODO: Fazer uma tela de login alternativa usando username, ao invés de e-mail*/}
+                    {/*<FormField
                         control={form.control}
-                        name='identifier'
+                        name='username'
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Nome de Usuário ou E-mail</FormLabel>
@@ -80,8 +80,8 @@ export const LoginForm = () => {
                                 <FormMessage/>
                             </FormItem>
                         )}
-                    />
-                    {/*<FormField
+                    />*/}
+                    <FormField
                         control={form.control}
                         name='email'
                         render={({ field }) => (
@@ -98,7 +98,7 @@ export const LoginForm = () => {
                                 <FormMessage/>
                             </FormItem>
                         )}
-                    />*/}
+                    />
                     <FormField
                         control={form.control}
                         name='password'
