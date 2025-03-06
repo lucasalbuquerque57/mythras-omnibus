@@ -2,10 +2,12 @@
 
 import * as z from 'zod';
 
-import { signIn} from "@authMain";
+import { signIn} from '@authMain';
 import {LoginSchema} from '@/schemas/users';
-import {DEFAULT_LOGIN_REDIRECT} from "@/routes";
-import {AuthError} from "next-auth";
+import {DEFAULT_LOGIN_REDIRECT} from '@/routes';
+import {AuthError} from 'next-auth';
+import { generateVerificationToken } from '@/lib/tokens';
+import {getUserByEmail} from "@/util/user";
 
 export const login = async (values: z.infer<typeof LoginSchema>) => { // ✅ Added `async`
     console.log(values);
@@ -16,6 +18,14 @@ export const login = async (values: z.infer<typeof LoginSchema>) => { // ✅ Add
         }
     }
     const {email, password} = validatedFields.data;
+    const existingUser = await getUserByEmail(email);
+    if (!existingUser || !existingUser.email || !existingUser.password){
+        return { error: 'Usuário não encontrado!' };
+    }
+    if (!existingUser.emailVerified){
+        const verificationToken = await generateVerificationToken(existingUser.email);
+        return { success: 'E-mail de confirmação enviado!' };
+    }
 
     try {
         await signIn('credentials', {
