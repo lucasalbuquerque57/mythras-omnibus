@@ -42,7 +42,9 @@ export const LoginForm = () => {
       startTransition(() => {
               login(values)
                   .then((data) => {
+                      // @ts-ignore
                       setError(data.error);
+                      // @ts-ignore TODO: Check those errors
                       setSuccess(data.success);
                   });
       });
@@ -65,7 +67,7 @@ export const LoginForm = () => {
                     {/*// TODO: Fazer uma tela de login alternativa usando username, ao invés de e-mail*/}
                     {/*<FormField
                         control={form.control}
-                        name='username'
+                        name='name'
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Nome de Usuário ou E-mail</FormLabel>

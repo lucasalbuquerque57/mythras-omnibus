@@ -14,7 +14,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => { // ‚
             error: 'Campos inv√°lidos!',
         };
     }
-    const {username, email, password} = validatedFields.data;
+    const {name, email, password} = validatedFields.data;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const existingUser = await getUserByEmail(email);
@@ -27,7 +27,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => { // ‚
 
     await db.user.create({
         data: {
-            username,
+            name,
             email,
             password: hashedPassword,
         },

@@ -21,12 +21,12 @@ export const LoginSchema = z.object({
 
 // experimental
 export const LoginAltSchema = z.object({
-    username: usernameValidation,
+    name: usernameValidation,
     password: passwordValidation,
 });
 
 export const RegisterSchema = z.object({
-    username: usernameValidation,
+    name: usernameValidation,
     email: emailValidation,
     password: passwordValidation,
 });
@@ -76,7 +76,7 @@ export const RegisterSchema = z.object({
 }).refine(data => {
     // Apenas valida se o e-mail existir
     if (!data.email) return true;
-    return !data.email.includes(data.username);
+    return !data.email.includes(data.name);
 }, {
     message: 'E-mail não pode conter o nome de usuário',
     path: ["email"],

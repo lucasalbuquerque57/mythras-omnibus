@@ -31,7 +31,7 @@ export const RegisterForm = () => {
       resolver: zodResolver(RegisterSchema),
       defaultValues: {
           email: '',
-          username: '',
+          name: '',
           password: '',
       },
   });
@@ -65,7 +65,7 @@ export const RegisterForm = () => {
                 <div className='space-y-4'>
                     <FormField
                         control={form.control}
-                        name='username'
+                        name='name'
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Nome de Usuário</FormLabel>
