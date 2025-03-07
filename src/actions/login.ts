@@ -2,12 +2,13 @@
 
 import * as z from 'zod';
 
-import { signIn} from '@authMain';
-import {LoginSchema} from '@/schemas/users';
-import {DEFAULT_LOGIN_REDIRECT} from '@/routes';
-import {AuthError} from 'next-auth';
+import { signIn } from '@authMain';
+import { LoginSchema } from '@/schemas/users';
+import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
+import { AuthError } from 'next-auth';
+import { getUserByEmail } from "@/util/user";
 import { generateVerificationToken } from '@/lib/tokens';
-import {getUserByEmail} from "@/util/user";
+import { sendVerificationEmail } from '@/lib/mail';
 
 export const login = async (values: z.infer<typeof LoginSchema>) => { // ✅ Added `async`
     console.log(values);
@@ -22,8 +23,17 @@ export const login = async (values: z.infer<typeof LoginSchema>) => { // ✅ Add
     if (!existingUser || !existingUser.email || !existingUser.password){
         return { error: 'Usuário não encontrado!' };
     }
+
+    // This can cause some security issues as it sends the verification e-mail BEFORE it verifies if the password is correct
+    // So, an attacker can try to discover which random e-mails do have an account in this website (if that account's email is not verified)
     if (!existingUser.emailVerified){
         const verificationToken = await generateVerificationToken(existingUser.email);
+
+        await sendVerificationEmail(
+            verificationToken.email,
+            verificationToken.token,
+        );
+
         return { success: 'E-mail de confirmação enviado!' };
     }
 
