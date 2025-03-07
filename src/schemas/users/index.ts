@@ -6,7 +6,7 @@ const usernameValidation = z.string()
     .regex(/^[a-zA-Z0-9_]+$/, 'Nome de usuário só pode conter maiúsculas, minúsculas e underlines');
 
 const passwordValidation = z.string()
-    .min(4, 'Senha precisa ter pelo menos 4 caracteres')
+    .min(6, 'Senha precisa ter pelo menos 6 caracteres')
     .max(20, 'Senha não pode exceder 20 caracteres');
 
 // TODO: Check this later if it is working fine
