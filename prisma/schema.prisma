@@ -55,7 +55,7 @@ model Account {
   @@id([provider, providerAccountId])
 }
 
-// TODO: I should rename this to start with upper case
+// TODO: I should rename this to start with upper case (but it's not worth the hassle)
 model verificationToken {
   id                String    @id @default(cuid())
   email             String
