@@ -1,5 +1,44 @@
 import * as z from 'zod';
 
+const usernameValidation = z.string()
+    .min(3, 'Nome de usuário precisa ter pelo menos 3 caracteres')
+    .max(20, 'Nome de usuário não pode ultrapassar 20 caracteres')
+    .regex(/^[a-zA-Z0-9_]+$/, 'Nome de usuário só pode conter maiúsculas, minúsculas e underlines');
+
+const passwordValidation = z.string()
+    .min(4, 'Senha precisa ter pelo menos 4 caracteres')
+    .max(20, 'Senha não pode exceder 20 caracteres');
+
+// TODO: Check this later if it is working fine
+const emailValidation = z.string()
+        .email('Endereço de e-mail inválido')
+        .optional();
+
+// used to reset email or password, depending on where it is called (settings page = email, login page = password)
+export const ResetInfoSchema = z.object({
+    email: emailValidation,
+});
+
+export const LoginSchema = z.object({
+    email: emailValidation,
+    password: passwordValidation,
+});
+
+// experimental
+export const LoginAltSchema = z.object({
+    name: usernameValidation,
+    password: passwordValidation,
+});
+
+export const RegisterSchema = z.object({
+    name: usernameValidation,
+    email: emailValidation,
+    password: passwordValidation,
+});
+
+/*
+import * as z from 'zod';
+
 // Validações básicas
 const usernameValidation = z.string()
     .min(3, 'Nome de usuário precisa ter pelo menos 3 caracteres')
@@ -42,8 +81,9 @@ export const RegisterSchema = z.object({
 }).refine(data => {
     // Apenas valida se o e-mail existir
     if (!data.email) return true;
-    return !data.email.includes(data.username);
+    return !data.email.includes(data.name);
 }, {
     message: 'E-mail não pode conter o nome de usuário',
     path: ["email"],
 });
+*/
