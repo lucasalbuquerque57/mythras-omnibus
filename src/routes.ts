@@ -10,7 +10,7 @@ export const publicRoutes = [
     '/',
     '/auth/new-verification',
 ];
-
+/*new-verification is not included in authRoutes because it might be used in the settings to reset email
 
 /**
  * An array of routes that are used for authentication.
@@ -22,6 +22,7 @@ export const authRoutes = [
     '/auth/login',
     '/auth/register',
     '/auth/error',
+    '/auth/reset'
 ];
 
 

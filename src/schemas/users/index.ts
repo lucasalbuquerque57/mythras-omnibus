@@ -14,6 +14,11 @@ const emailValidation = z.string()
         .email('Endereço de e-mail inválido')
         .optional();
 
+// used to reset email or password, depending on where it is called (settings page = email, login page = password)
+export const ResetInfoSchema = z.object({
+    email: emailValidation,
+});
+
 export const LoginSchema = z.object({
     email: emailValidation,
     password: passwordValidation,

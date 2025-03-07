@@ -7,12 +7,12 @@ import { FormSuccess } from '@/components/form-success';
 
 import { newVerification } from '@/actions/new-verification';
 
-import { useSearchParams } from "next/navigation";
+import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState} from 'react';
 
 export const NewVerificationForm = () => {
     const searchParams = useSearchParams();
-    const token = searchParams.get("token");
+    const token = searchParams.get('token');
     const [error, setError] = useState<string | undefined>();
     const [success, setSuccess] = useState<string | undefined>();
 
