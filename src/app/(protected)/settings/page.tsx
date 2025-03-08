@@ -11,7 +11,6 @@ const SettingsPage = () => {
 
     return (
         <div>
-          {JSON.stringify(user)}
             <button onClick={onClick} type='submit'>
                 Sair
             </button>
