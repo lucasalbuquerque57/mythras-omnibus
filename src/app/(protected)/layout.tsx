@@ -1,4 +1,4 @@
-import NavBar from "@/app/(protected)/_components/main-nav-bar";
+import NavBar from "@/app/(protected)/_components/main-navbar/main-nav-bar";
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
