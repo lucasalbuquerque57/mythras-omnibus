@@ -15,10 +15,10 @@ export default function Home() {
       bg-gradient-to-br from-preta to-firefox2'>
         <div className='space-y-6'>
           <h1 className={cn('text-6xl font-semibold text-white', font.className)}>
-            Auth
+            Bearnardo
           </h1>
           <p className='text-stone-100'>
-              A simple authentication service
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit
           </p>
           <div>
               <LoginButton>

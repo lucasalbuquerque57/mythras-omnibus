@@ -9,7 +9,7 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
         from: 'onboarding@resend.dev',
         to: email,
         subject: 'Trocar sua senha',
-        html: `<p>Clique <a href="${resetLink}">aqui</a> para trocar seu email.</p>`
+        html: `<p>Clique <a href='${resetLink}'>aqui</a> para trocar seu email.</p>`
     })
 }
 
