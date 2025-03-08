@@ -1,5 +1,5 @@
 import {auth, signOut} from '@authMain';
-import {getSession} from "next-auth/react";
+import { getSession } from 'next-auth/react';
 
 const SettingsPage = async () => {
     const session = await auth();
