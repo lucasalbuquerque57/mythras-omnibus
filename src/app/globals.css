@@ -20,8 +20,9 @@ html, body{
 #1e0032 Firefox dark purple
 */
 
+/*
 @theme {
-  --color-preta: #0e050f; /*preto aroxado*/
+  --color-preta: #0e050f; !*preto aroxado*!
   --color-azulEscuro: #170b3b;
   --color-roxo: #341948;
   --color-roxoVagabundo: #9388a2;
@@ -30,15 +31,15 @@ html, body{
   --color-violeta: #8155ba;
   --color-roxoFraco: #695e93;
 
-  /*firefox*/
+  !*firefox*!
   --color-firefox1: #25003e;
   --color-firefox2: #1e0032;
 
-  /*dracula: check their github */
+  !*dracula: check their github *!
   --color-dracWebsite: #0e0d11;
   --color-dracWebsite2: #1d1b22;
 
-  /*Metro UI Color Dark Purple*/
+  !*Metro UI Color Dark Purple*!
   --color-metro-500: #5636a7;
   --color-metro-600: #4d3095;
   --color-metro-700: #432a82;
@@ -49,7 +50,7 @@ html, body{
   --color-metro-1200: #130c25;
   --color-metro-1300: #0a0613;
   --color-metro-1400: #0d0d0d;
-}
+}*/
 
 @theme inline {
   --color-background: var(--background);
@@ -163,6 +164,33 @@ html, body{
   --sidebar-ring: oklch(0.446 0.043 257.281);
 }
 
+.dark2 {
+  --background: oklch(13.7% 4.5% 278);
+  --foreground: oklch(97.9% 2.5% 210);
+  --card: oklch(13.7% 4.5% 278);
+  --card-foreground: oklch(97.9% 2.5% 210);
+  --popover: oklch(13.7% 4.5% 278);
+  --popover-foreground: oklch(97.9% 2.5% 210);
+  --primary: oklch(55.4% 25.9% 289);
+  --primary-foreground: oklch(97.9% 2.5% 210);
+  --secondary: oklch(18.2% 5.5% 237);
+  --secondary-foreground: oklch(97.9% 2.5% 210);
+  --muted: oklch(18.2% 5.5% 237);
+  --muted-foreground: oklch(65.4% 5.3% 228);
+  --accent: oklch(18.2% 5.5% 237);
+  --accent-foreground: oklch(97.9% 2.5% 210);
+  --destructive: oklch(33.4% 24.1% 24);
+  --destructive-foreground: oklch(97.9% 2.5% 210);
+  --border: oklch(18.2% 5.5% 237);
+  --input: oklch(18.2% 5.5% 237);
+  --ring: oklch(55.4% 25.9% 289);
+  --chart-1: oklch(52.7% 25.1% 245);
+  --chart-2: oklch(48.2% 22.8% 142);
+  --chart-3: oklch(58.9% 30.4% 48);
+  --chart-4: oklch(64.8% 31.1% 310);
+  --chart-5: oklch(59.9% 32.6% 24);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -171,3 +199,34 @@ html, body{
     @apply bg-background text-foreground;
   }
 }
+
+/*
+Darker theme
+--background: 20 14.3% 4.1%;
+--foreground: 60 9.1% 97.8%;
+
+--card: 20 14.3% 4.1%;
+--card-foreground: 60 9.1% 97.8%;
+
+--popover: 20 14.3% 4.1%;
+--popover-foreground: 60 9.1% 97.8%;
+
+--primary: 60 9.1% 97.8%;
+--primary-foreground: 24 9.8% 10%;
+
+--secondary: 12 6.5% 15.1%;
+--secondary-foreground: 60 9.1% 97.8%;
+
+--muted: 12 6.5% 15.1%;
+--muted-foreground: 24 5.4% 63.9%;
+
+--accent: 12 6.5% 15.1%;
+--accent-foreground: 60 9.1% 97.8%;
+
+--destructive: 0 62.8% 30.6%;
+--destructive-foreground: 60 9.1% 97.8%;
+
+--border: 12 6.5% 15.1%;
+--input: 12 6.5% 15.1%;
+--ring: 24 5.7% 82.9%;
+*/
