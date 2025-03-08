@@ -1,12 +1,11 @@
 import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 
-
-
 import { db } from '@/lib/db';
 import authConfig from '@authConfig';
 
-import {getUserById} from "@/util/user";
+import { getUserById } from '@/util/user';
+import { getTwoFactorConfirmationByUserId } from '@/util/two-factor-confirmation';
 
 export const { handlers: {GET, POST}, auth, signIn, signOut } = NextAuth({
     pages: {
@@ -32,7 +31,17 @@ export const { handlers: {GET, POST}, auth, signIn, signOut } = NextAuth({
             // Block sign in if the user is not yet verified
             if (!existingUser?.emailVerified) return false;
 
-            // TODO: Add 2FA check, in the future, maybe
+            // Block sign with 2FA
+            if (existingUser.isTwoFactorEnabled){
+                const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(existingUser.id);
+
+                if (!twoFactorConfirmation) return false;
+
+                // Delete two factor confirmation for next sign in
+                await db.twoFactorConfirmation.delete({
+                    where: { id: twoFactorConfirmation.id}
+                });
+            }
 
             return true;
         },
