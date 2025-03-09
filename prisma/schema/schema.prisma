@@ -4,7 +4,7 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
-// prisma/schema.prisma
+// prisma/schema/schema.prisma
 datasource db {
   provider  = "postgresql"
   url  	    = env("DATABASE_URL")
@@ -12,12 +12,19 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["prismaSchemaFolder"]
 }
+
+/* User Stuff */
 
 enum UserRole {
   ADMIN
   DIRECTOR
   PLAYER
+}
+
+enum GameSystem {
+  MYTHRAS_STD
 }
 
 model User {
@@ -28,11 +35,17 @@ model User {
   image                       String?
   password                    String?
   role                        UserRole                  @default(PLAYER)
+
   accounts                    Account[]
   isTwoFactorEnabled          Boolean                   @default(false)
   twoFactorConfirmation       TwoFactorConfirmation?
   createdAt                   DateTime                  @default(now())
   updatedAt                   DateTime                  @updatedAt
+
+  // user characters
+  characters                  Character[]
+  // user campaigns as a director
+  campaign                    Campaign[]
 }
 
 model Account {
@@ -86,7 +99,6 @@ model TwoFactorToken {
 
 model TwoFactorConfirmation {
   id                String    @id @default(cuid())
-
   userId            String
   user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
