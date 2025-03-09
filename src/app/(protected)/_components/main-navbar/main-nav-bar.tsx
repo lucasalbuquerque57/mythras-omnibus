@@ -1,7 +1,5 @@
 'use client';
 
-import  { useCurrentUser } from '@/hooks/use-current-user';
-
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -9,22 +7,10 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuTrigger,
-  NavigationMenuList, navigationMenuTriggerStyle
+  NavigationMenuList, navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
-import Link from "next/link"
+import Link from "next/link";
 import { cn } from "@/lib/cn";
-import {Input} from "@/components/ui/input";
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ProfileDropdowns } from "@/app/(protected)/_components/main-navbar/profile-drop";
 
 
@@ -41,7 +27,7 @@ export const NavBar = () => {
                     <NavigationMenuLink
                         className={cn(
                             navigationMenuTriggerStyle(),
-                            "text-2xl hover:bg-transparent focus:bg-transparent flex items-center gap-2 font-semibold" // Add custom styles
+                            "text-2xl hover:bg-transparent focus:bg-transparent flex items-center gap-2 font-semibold", // Add custom styles
                         )}
                     >
                       Bearnardo
@@ -60,7 +46,7 @@ export const NavBar = () => {
                     <NavigationMenuLink
                         className={cn(
                             navigationMenuTriggerStyle(),
-                            "text-muted-foreground"
+                            "text-muted-foreground",
                         )}
                     >
                       Personagens
@@ -72,7 +58,7 @@ export const NavBar = () => {
                     <NavigationMenuLink
                         className={cn(
                             navigationMenuTriggerStyle(),
-                            "text-muted-foreground"
+                            "text-muted-foreground",
                         )}
                     >
                       Campanhas

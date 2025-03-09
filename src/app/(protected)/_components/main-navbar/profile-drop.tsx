@@ -5,7 +5,7 @@ import {
   DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -31,8 +31,8 @@ export const ProfileDropdowns = () => {
           <DropdownMenuContent className="w-56" align="end" forceMount>
             <DropdownMenuLabel className="font-normal">
               <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">{user?.name}</p>
-                <p className="text-xs leading-none text-muted-foreground">
+                <p className="text-sm font-medium leading-none truncate">{user?.name}</p>
+                <p className="text-xs leading-none text-muted-foreground truncate">
                   {user?.email}
                 </p>
               </div>
@@ -45,7 +45,7 @@ export const ProfileDropdowns = () => {
               <DropdownMenuItem>
                 Configurações
               </DropdownMenuItem>
-              <DropdownMenuItem>Mestrar</DropdownMenuItem>
+              <DropdownMenuItem>Mestrar*</DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>

@@ -1,0 +1,374 @@
+/*
+
+    MYTHRAS CHARACTER ENUMS
+
+*/
+
+enum MythrasStdCharacteristicType {
+  Strength
+  Constitution
+  Size
+  Dexterity
+  Intelligence
+  Power
+  Charisma
+}
+
+enum MythrasStdAttributeType {
+  ActionPoints
+  DamageModifier
+  ExperienceModifier
+  HealingRate
+  InitiativeBonus
+  LuckPoints
+  MovementRate
+}
+
+enum MythrasStdHitLocationType {
+  Head
+  Thorax
+  Abdomen
+  RightArm
+  LeftArm
+  RightLeg
+  LeftLeg
+  Tail
+}
+
+enum MythrasStdStandardSkillType {
+  Athletics
+  Boating
+  Brawn
+  Conceal
+  Customs
+  Dance
+  Deceit
+  Drive
+  Endurance
+  Evade
+  FirstAid
+  Influence
+  Insight
+  Locale
+  Perception
+  Ride
+  Sing
+  Stealth
+  Swim
+  Unarmed
+  Willpower
+}
+
+enum MythrasStdSpellType {
+  Theism
+  Sorcery
+  FolkMagic
+  Mysticism
+  Animism
+}
+
+enum MythrasStdMagicSkillType {
+  Binding
+  Devotion
+  Exhort
+  FolkMagic
+  Invocation
+  Meditation
+  Mysticism
+  Shaping
+  Trance
+}
+
+enum MythrasStdProfessionalSkillType {
+  Acting
+  Acrobatics
+  // Professional Skills that requires tags/more specific stuff
+  Art
+  Bureaucracy
+  Commerce
+  Courtesy
+  // Professional Skills that requires tags/more specific stuff
+  Craft
+  // Professional Skills that requires tags/more specific stuff
+  Culture
+  Disguise
+  Engineering
+  Gambling
+  Healing
+  // Professional Skills that requires tags/more specific stuff
+  Language
+  Literacy
+  Lockpicking
+  // Professional Skills that requires tags/more specific stuff
+  Lore
+  Mechanisms
+  Navigation
+  Oratory
+  Seamanship
+  Seduction
+  Sleight
+  Streetwise
+  Survival
+  Teach
+  Track
+}
+
+
+/*
+keeping it here just in case
+enum MythrasStdSkillType {
+  STANDARD
+  MAGIC
+  PROFESSIONAL
+  PROFESSIONAL_ANY
+}*/
+
+/*
+
+    MYTHRAS CHARACTER MODELS
+
+*/
+
+model MythrasStdCharacter {
+  id              String        @id @default(cuid())
+  character       Character     @relation(fields: [id], references: [id])
+
+
+  // Relationships
+  personal        MythrasStdCharacterPersonal[]
+  characteristics MythrasStdCharacterCharacteristic[]
+  attributes      MythrasStdCharacterAttribute[]
+  hitLocations    MythrasStdHitLocation[]
+  standardSkills  MythrasStdStandardSkill[]
+  magicSkills     MythrasStdMagicSkill[]
+  professionalSkills MythrasStdProfessionalSkill[]
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model MythrasStdCharacterPersonal {
+  id              String        @id @default(cuid())
+  characterId     String
+  character       MythrasStdCharacter     @relation(fields: [characterId], references: [id])
+  name            String
+  player          String
+  nickname        String?
+  age             Int
+  gender          String
+  species         String
+  culture         String
+  homeland        String
+  religion        String
+  deity           String?
+  socialClass     String?
+  lord            String?
+  career          String
+  faction         String?
+  handedness      String
+  frame           String
+  height          String
+  weight          String
+}
+
+
+model MythrasStdCharacterCharacteristic {
+  id              String        @id @default(cuid())
+  characterId     String
+  character       MythrasStdCharacter     @relation(fields: [characterId], references: [id])
+  name            MythrasStdCharacteristicType
+  original        String
+  current         String
+}
+
+model MythrasStdCharacterAttribute {
+  id              String        @id @default(cuid())
+  characterId     String
+  character       MythrasStdCharacter     @relation(fields: [characterId], references: [id])
+  name            MythrasStdAttributeType
+  original        String
+  current         String
+}
+
+model MythrasStdHitLocation {
+  id              String        @id @default(cuid())
+  characterId     String
+  character       MythrasStdCharacter     @relation(fields: [characterId], references: [id])
+  location        MythrasStdHitLocationType
+  armor           String?
+  hp              Int
+  hpHistory       Json          // Store as JSON array of change logs
+  ap              Int
+  apHistory       Json          // Store as JSON array of change logs
+}
+
+model MythrasStdStandardSkill {
+  id                String        @id @default(cuid())
+  characterId       String
+  character         MythrasStdCharacter     @relation(fields: [characterId], references: [id])
+  name              MythrasStdStandardSkillType
+  baseValue         Int
+  currentProficiency Int
+  isProficient      Boolean
+  isFumbled         Boolean       @default(false)
+}
+
+model MythrasStdMagicSkill {
+  id                String        @id @default(cuid())
+  characterId       String
+  character         MythrasStdCharacter     @relation(fields: [characterId], references: [id])
+  name              MythrasStdMagicSkillType
+  baseValue         Int
+  currentProficiency Int
+  isProficient      Boolean
+  isFumbled         Boolean       @default(false)
+  spellType         String        // Could be enum if needed
+}
+
+model MythrasStdProfessionalSkill {
+  id                String        @id @default(cuid())
+  characterId       String
+  character         MythrasStdCharacter     @relation(fields: [characterId], references: [id])
+  name              MythrasStdProfessionalSkillType
+  baseValue         Int
+  currentProficiency Int
+  isProficient      Boolean
+  isFumbled         Boolean       @default(false)
+  specialty         String?       // Only populated for 'Any' skills
+
+  @@unique([characterId, name, specialty]) // Composite uniqueness
+  @@index([characterId])
+  @@index([name])
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+model MythrasStdCharacteristic {
+  id           String                @id @default(cuid())
+  character    MythrasStdCharacter      @relation(fields: [characterId], references: [id])
+  characterId  String
+  type         MythrasStdCharacteristicType
+  original     String
+  current      String
+
+  @@unique([characterId, type])
+}
+
+model MythrasStdAttribute {
+  id           String                 @id @default(cuid())
+  character    MythrasStdCharacter       @relation(fields: [characterId], references: [id])
+  characterId  String
+  type         MythrasStdAttributeType
+  original     String
+  current      String
+
+  @@unique([characterId, type])
+}
+
+model MythrasStdHitLocation {
+  id           String                 @id @default(cuid())
+  character    MythrasStdCharacter       @relation(fields: [characterId], references: [id])
+  characterId  String
+  location     MythrasStdHitLocationType
+  armor        String?
+  hp           Int
+  ap           Int
+  hpHistory    MythrasStdHitLocationChangeLog[]
+
+  @@unique([characterId, location])
+}
+
+model MythrasStdHitLocationChangeLog {
+  id            String       @id @default(cuid())
+  hitLocation   MythrasStdHitLocation  @relation(fields: [hitLocationId], references: [id])
+  hitLocationId String
+  changedAt     DateTime     @default(now())
+  oldValue      Int
+  newValue      Int
+  description   String?
+}
+
+model MythrasStdSkill {
+  id                  String                 @id @default(cuid())
+  character           MythrasStdCharacter       @relation(fields: [characterId], references: [id])
+  characterId         String
+
+  // Common fields
+  baseValue           Int
+  currentProficiency  Int
+  isProficient        Boolean
+  isFumbled           Boolean              @default(false)
+
+  // Skill type discrimination
+  skillType           MythrasStdSkillType
+
+  // Standard Skill
+  standardSkillType   MythrasStdStandardSkillType?
+
+  // Magic Skill
+  magicSkillType      MythrasStdMagicSkillType?
+  spellType           MythrasStdSpellType?
+
+  // Professional Skill
+  professionalSkillType MythrasStdProfessionalSkillType?
+
+  // Professional Skill (Any)
+  professionalAnyType MythrasStdProfessionalSkillAnyType?
+  specialty           String?
+
+  @@index([characterId])
+}
+
+
+model MythrasStdCharacter {
+  id              String          @id @default(cuid())
+
+  // Reference to the base character model
+  character   Character       @relation(fields: [characterId], references: [id])
+  characterId String          @unique
+
+  // Personal Info
+  name            String
+  player          String
+  nickname        String?
+  age             Int
+  gender          String
+  species         String
+  culture         String
+  homeland        String
+  religion        String
+  deity           String?
+  socialClass     String
+  lord            String?
+  career          String
+  faction         String?
+  handedness      String
+  frame           String
+  height          String
+  weight          String
+
+  // Relationships
+  characteristics MythrasStdCharacteristic[]
+  attributes      MythrasStdAttribute[]
+  hitLocations    MythrasStdHitLocation[]
+  skills          MythrasStdSkill[]
+
+*/
+/*
+  @@index([userId])
+*//*
+
+}*/

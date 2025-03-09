@@ -1,0 +1,53 @@
+model Character {
+  id          String        @id @default(cuid())
+  userId      String
+  user        User          @relation(fields: [userId], references: [id])
+  system      GameSystem    @default(MYTHRAS_STD)
+  name        String
+  player      String
+  campaigns   CampaignCharacter[]
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+
+  // System-specific relationships (one-to-one)
+  mythrasDetails  MythrasStdCharacter?
+}
+
+model Campaign {
+  id              String        @id @default(cuid())
+  name            String
+  description     String?
+  system          GameSystem    @default(MYTHRAS_STD)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  characters      CampaignCharacter[]
+  directorId      String       // Who created the campaign
+  director        User         @relation(fields: [directorId], references: [id])
+
+  // Optional campaign-specific settings
+  startDate       DateTime?
+  endDate         DateTime?
+  status          Boolean @default(true)
+
+  @@index([directorId])
+  @@index([system])
+}
+
+model CampaignCharacter {
+  id              String        @id @default(cuid())
+  characterId     String
+  campaignId      String
+  character       Character     @relation(fields: [characterId], references: [id])
+  campaign        Campaign      @relation(fields: [campaignId], references: [id])
+  joinedAt        DateTime      @default(now())
+  isActive        Boolean       @default(true)
+
+  // Optional campaign-specific character data
+  notes           String?
+
+  @@unique([campaignId, characterId])
+  @@index([campaignId])
+  @@index([characterId])
+}
