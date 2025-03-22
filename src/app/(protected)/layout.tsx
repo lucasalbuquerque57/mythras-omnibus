@@ -7,7 +7,7 @@ interface ProtectedLayoutProps {
 // @ts-expect-error no idea why
 const ProtectedLayout = ({children}) => {
   return (
-    <div>
+    <div className="pt-16">
       {/*<NavBar/>*/}
       {children}
     </div>

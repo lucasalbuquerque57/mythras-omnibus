@@ -1,7 +1,7 @@
 // schemas/character/skills/professional.ts
 import { z } from 'zod';
 import { baseSkillSchema } from './base';
-import { PROFESSIONAL_SKILLS, PROFESSIONAL_SKILLS_ANY } from '@/lib/characters/mythras/contants/constants';
+import { PROFESSIONAL_SKILLS, PROFESSIONAL_SKILLS_ANY } from '@/types/characters/mythras/contants/constants';
 
 export const professionalSkillSchema = baseSkillSchema.extend({
     category: z.union([

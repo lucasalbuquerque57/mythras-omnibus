@@ -23,10 +23,9 @@ export const CardWrapper = ({
     headerLabel,
     backButtonLabel,
     backButtonHref,
-    showSocial
+    showSocial,
 }: CardWrapperProps) => {
     return (
-        // TODO: Style this page, touch the colors
         <Card className='w-[400px] shadow-md'>
             <CardHeader>
                 <Header label={headerLabel} />

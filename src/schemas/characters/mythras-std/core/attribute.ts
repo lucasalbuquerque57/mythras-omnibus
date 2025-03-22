@@ -1,6 +1,6 @@
 // schemas/character/base/attribute.ts
 import { z } from 'zod';
-import { ATTRIBUTES } from '@/lib/characters/mythras/contants/constants';
+import { ATTRIBUTES } from '@/types/characters/mythras/contants/constants';
 
 export const attributeSchema = z.object({
     attribute: z.enum(ATTRIBUTES),
