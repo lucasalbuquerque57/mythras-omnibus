@@ -25,15 +25,37 @@ model Campaign {
   characters      CampaignCharacter[]
   directorId      String       // Who created the campaign
   director        User         @relation(fields: [directorId], references: [id])
+  /*players         CampaignPlayer[]*/
 
   // Optional campaign-specific settings
   startDate       DateTime?
   endDate         DateTime?
-  status          Boolean @default(true)
+  status          Boolean @default(false)
+  maxPlayers      Int? // just in case it becomes relevant
+  sessionLength   Int? // in Hours
+  frequency       String?  // "Weekly", "Biweekly"
+  platform        String?  // "Discord", "Owlbear"
+
+
+  // Security stuff
+  password     String?  // Hashed or plaintext, but I think I will use plaintext as it is not really a concern for nwo
+  isPublic     Boolean @default(false)
 
   @@index([directorId])
   @@index([system])
 }
+
+/*model CampaignPlayer {
+  id         String @id @default(cuid())
+  userId     String
+  campaignId String
+  user       User   @relation(fields: [userId], references: [id])
+  campaign   Campaign @relation(fields: [campaignId], references: [id])
+  joinedAt   DateTime @default(now())
+  isActive   Boolean @default(true)
+
+  @@unique([campaignId, userId])
+}*/
 
 model CampaignCharacter {
   id              String        @id @default(cuid())
@@ -44,7 +66,11 @@ model CampaignCharacter {
   joinedAt        DateTime      @default(now())
   isActive        Boolean       @default(true)
 
-  // Optional campaign-specific character data
+  // In case a player have more than one character in a campaign, those options below might be useful
+  isMainCharacter Boolean @default(false)  // For campaigns where players have multiple chars
+  role            String?  // "NPC", "Player Character", etc.
+
+  // character specific notes
   notes           String?
 
   @@unique([campaignId, characterId])

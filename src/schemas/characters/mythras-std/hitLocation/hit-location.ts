@@ -1,7 +1,7 @@
 // schemas/character/hitLocation/hitLocation.ts
 import { z } from 'zod';
 import { changeLogSchema } from '@/schemas/characters/mythras-std/hitLocation/change-log';
-import { HIT_LOCATIONS } from '@/lib/characters/mythras/contants/constants';
+import { HIT_LOCATIONS } from '@/types/characters/mythras/contants/constants';
 
 export const hitLocationSchema = z.object({
     location: z.enum(HIT_LOCATIONS),
