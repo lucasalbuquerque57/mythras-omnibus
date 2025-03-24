@@ -12,7 +12,7 @@ model Character {
 
 
   // System-specific relationships (one-to-one)
-  mythrasDetails  MythrasStdCharacter?
+  mythrasData Json?
 }
 
 model Campaign {
