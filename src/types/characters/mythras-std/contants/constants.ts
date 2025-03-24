@@ -45,10 +45,6 @@ export const PROFESSIONAL_SKILLS_ANY = [
 ] as const;
 
 
-/*
-export type ProfessionalSkillAny = `${(typeof PROFESSIONAL_SKILLS_ANY)[number]} (any)`;
-*/
-
 
 
 
