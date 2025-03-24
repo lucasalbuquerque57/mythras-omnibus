@@ -25,6 +25,7 @@ enum UserRole {
 
 enum GameSystem {
   MYTHRAS_STD
+  DND_5E
 }
 
 model User {
