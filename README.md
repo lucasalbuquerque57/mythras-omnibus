@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Bearnardo
 
-## Getting Started
+Personal project for me and my friends to store, organize and use character sheets (mainly Mythras), as PDFs are very limited.
 
-First, run the development server:
+## Tech
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+NextJS (TypeScript), NextAuth, Zod, Prisma, Tailwind
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+MVP features in the works:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Simple but secure Authentication system with OAuth (Discord, GitHub) and Credentials
+- Simple campaign creation
+- Simple unguided character creation
+- Simple Director dashboard to check data of the PCs in their Campaign
 
-## Learn More
+Planned phase 2 features:
 
-To learn more about Next.js, take a look at the following resources:
+- Dice rolling
+- Initiative tracker
+- Simple inventory system
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Planned phase 3 features:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- More robust inventory system
+- Rule book integration (json or xml)
+- Simple note-taking
 
-## Deploy on Vercel
+Planned phase 4 features:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Character sheet PDF export
+- Mobile optimization
