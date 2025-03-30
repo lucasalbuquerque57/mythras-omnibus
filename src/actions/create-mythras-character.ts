@@ -7,7 +7,7 @@ import { z } from 'zod';
 
 export const createMythrasCharacter = async (
     values: z.infer<typeof MythrasDataSchema>,
-    characterId?: string, // Add optional characterId parameter
+    characterId?: string,
 ) => {
     const validation = MythrasDataSchema.safeParse(values);
     if (!validation.success) return { error: 'Invalid data' };
@@ -18,12 +18,13 @@ export const createMythrasCharacter = async (
                 throw new Error('Player ID is required');
             }
 
+            // Base character update/create
             const baseCharacter = characterId
                 ? await prisma.character.update({
                     where: { id: characterId },
                     data: {
                         name: validation.data.personal.name,
-                        // Other updatable fields
+                        status: 'DRAFT',
                     },
                 })
                 : await prisma.character.create({
@@ -32,15 +33,14 @@ export const createMythrasCharacter = async (
                         userId: validation.data.personal.player,
                         system: 'MYTHRAS_STD',
                         player: validation.data.personal.player,
-                        status: 'DRAFT', // Add status field to Character model
+                        status: 'DRAFT',
                     },
                 });
 
-            const mythrasCharacter = await prisma.mythrasStdCharacter.create({
-                data: {
-                    id: baseCharacter.id,
-                    personal: {
-                        create: {
+
+            const mythrasData = {
+                personal: {
+                    create: {
                             // Required fields with validation
                             name: validation.data.personal.name,
                             player: validation.data.personal.player,
@@ -117,19 +117,25 @@ export const createMythrasCharacter = async (
                             specialty: s.specialty,
                         })),
                     },
-                },
-                include: {
-                    personal: true,
-                    characteristics: true,
-                    attributes: true,
-                    hitLocations: true,
-                    standardSkills: true,
-                    magicSkills: true,
-                    professionalSkills: true,
+            };
+
+            await prisma.mythrasStdCharacter.upsert({
+                where: { id: baseCharacter.id },
+                create: { id: baseCharacter.id, ...mythrasData },
+                update: {
+                    // Delete existing relations and recreate
+                    personal: { deleteMany: {}, create: mythrasData.personal.create },
+                    characteristics: { deleteMany: {}, create: mythrasData.characteristics.create },
+                    attributes: { deleteMany: {}, create: mythrasData.attributes.create },
+                    hitLocations: { deleteMany: {}, create: mythrasData.hitLocations.create },
+                    standardSkills: { deleteMany: {}, create: mythrasData.standardSkills.create },
+                    magicSkills: { deleteMany: {}, create: mythrasData.magicSkills.create },
+                    professionalSkills: { deleteMany: {}, create: mythrasData.professionalSkills.create },
                 },
             });
 
-            return { baseCharacter, mythrasCharacter };
+
+            return { baseCharacter };
         });
 
         return {
