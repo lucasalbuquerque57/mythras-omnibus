@@ -141,7 +141,7 @@ export const CharacteristicsStep = ({
                                                 field.onChange(value);
                                                 form.setValue(`characteristics.${index}.current`, value);
                                             }}
-                                            onBlur={handleCalculate} /*migiht cause performance issues on my free server*/
+                                            onBlur={handleCalculate} /*might cause performance, unlikely but might*/
                                             disabled={isPending}
                                         />
                                     </FormControl>
