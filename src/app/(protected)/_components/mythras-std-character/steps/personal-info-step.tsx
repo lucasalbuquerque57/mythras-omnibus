@@ -3,10 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useCurrentUser } from '@/hooks/use-current-user';
-import { useState, useTransition } from 'react';
-import { MythrasCreationSchema } from '@/schemas/characters/mythras-std/character-creation';
-import { createMythrasCharacter } from '@/actions/create-mythras-character';
-
+import { MythrasDataSchema } from '@/schemas/characters/mythras-std';
 import {
     Form,
     FormControl,
@@ -24,95 +21,55 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '@/components/ui/dialog';
-import { FormError } from '@/components/form-error';
-import { FormSuccess } from '@/components/form-success';
-import {z} from 'zod';
-import { Label } from '@/components/ui/label';
+import { z } from 'zod';
 
+interface PersonalInfoStepProps {
+    onSubmit: (values: z.infer<typeof MythrasDataSchema>) => void;
+    isPending: boolean;
+}
 
-export const NewMythrasStdCharacterDialog = () => {
-    const [error, setError] = useState<string | undefined>();
-    const [success, setSuccess] = useState<string | undefined>();
-    const [isPending, startTransition] = useTransition();
+export const PersonalInfoStep = ({ onSubmit, isPending }: PersonalInfoStepProps) => {
     const user = useCurrentUser();
-
-    const form = useForm<z.infer<typeof MythrasCreationSchema>>({
-        resolver: zodResolver(MythrasCreationSchema),
+    const form = useForm<z.infer<typeof MythrasDataSchema>>({
+        resolver: zodResolver(MythrasDataSchema),
         defaultValues: {
-            userId: user?.id || '',
-            system: 'MYTHRAS_STD',
-            step: 1,
-            data: {
-                personal: {
-                    name: '',
-                    gender: '',
-                    species: '',
-                    culture: '',
-                    homeland: '',
-                    career: '',
-                },
+            personal: {
+                name: '',
+                player: user?.id || '',
+                gender: '',
+                species: '',
+                culture: '',
+                homeland: '',
+                career: '',
+                age: '20', // Default age as string
             },
+            characteristics: [],
+            attributes: [],
+            hitLocations: [],
+            skills: {
+                standard: [],
+                magic: [],
+                professional: [],
+            },
+            passion: [],
         },
     });
-
-    const onSubmit = (values: z.infer<typeof MythrasCreationSchema>) => {
-        startTransition(() => {
-            createMythrasCharacter(values)
-                .then((response) => {
-                    if (response.status === 'error') {
-                        setError(response.error);
-                        setSuccess(undefined);
-                    } else {
-                        setSuccess(response.message);
-                        setError(undefined);
-                        console.log('Character ID:', response.data.characterId);
-                    }
-                })
-                .catch((error) => {
-                    console.error('Submission error:', error);
-                    setError('Failed to submit form!');
-                });
-        });
-    };
     return (
-        <Dialog>
-            <DialogTrigger asChild>
-                <Button variant='outline'>Novo personagem</Button>
-            </DialogTrigger>
-            <DialogContent className='sm:max-w-[425px]'>
-                <DialogHeader>
-                    <DialogTitle>Criar novo personagem</DialogTitle>
-                    <DialogDescription>
-                        Adicione alguns detalhes iniciais de seu personagem
-                    </DialogDescription>
-                </DialogHeader>
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className='space-y-6'
-                    >
-                        <div className='space-y-4'>
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                        <div className='space-y-4 w-full'>
+                            {/* Personal Information Fields */}
                             <FormField
                                 control={form.control}
-                                name='data.personal.name'
+                                name='personal.name'
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Character Name</FormLabel>
+                                        <FormLabel>Nome do Personagem</FormLabel>
                                         <FormControl>
                                             <Input
                                                 {...field}
                                                 disabled={isPending}
                                                 placeholder='José Felipe'
-                                                className='w-full '
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -120,23 +77,20 @@ export const NewMythrasStdCharacterDialog = () => {
                                 )}
                             />
 
-                            {/* Gender */}
                             <FormField
                                 control={form.control}
-                                name='data.personal.gender'
+                                name='personal.gender'
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Gender</FormLabel>
+                                        <FormLabel>Gênero</FormLabel>
                                         <Select
                                             onValueChange={field.onChange}
                                             defaultValue={field.value}
                                             disabled={isPending}
                                         >
-                                            <FormControl className='w-full'>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder='Selecione o gênero' />
-                                                </SelectTrigger>
-                                            </FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Selecione o gênero" />
+                                            </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value='Man'>Masculino</SelectItem>
                                                 <SelectItem value='Woman'>Feminino</SelectItem>
@@ -148,26 +102,26 @@ export const NewMythrasStdCharacterDialog = () => {
                                 )}
                             />
 
-                            {/* Species */}
                             <FormField
                                 control={form.control}
-                                name='data.personal.species'
+                                name='personal.species'
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Species</FormLabel>
+                                        <FormLabel>Espécie</FormLabel>
                                         <Select
                                             onValueChange={field.onChange}
                                             defaultValue={field.value}
                                             disabled={isPending}
                                         >
-                                            <FormControl className='w-full'>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder='Selecione a espécie' />
-                                                </SelectTrigger>
-                                            </FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Selecione a espécie" />
+                                            </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value='Human'>Humano</SelectItem>
-                                                <SelectItem value='Dwarf'>Anão</SelectItem>
+                                                <SelectItem value='Humano'>Humano</SelectItem>
+                                                <SelectItem value='Anão'>Anão</SelectItem>
+                                                <SelectItem value='Metadílio'>Metadílio</SelectItem>
+                                                <SelectItem value='Vargr'>Vargr</SelectItem>
+                                                <SelectItem value='Vran'>Vran</SelectItem>
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />
@@ -175,23 +129,20 @@ export const NewMythrasStdCharacterDialog = () => {
                                 )}
                             />
 
-                            {/* Culture */}
                             <FormField
                                 control={form.control}
-                                name='data.personal.culture'
+                                name='personal.culture'
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Culture</FormLabel>
+                                        <FormLabel>Cultura</FormLabel>
                                         <Select
                                             onValueChange={field.onChange}
                                             defaultValue={field.value}
                                             disabled={isPending}
                                         >
-                                            <FormControl className='w-full'>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder='Selecione a cultura' />
-                                                </SelectTrigger>
-                                            </FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Selecione a cultura" />
+                                            </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value='Gallardo'>Gallardo</SelectItem>
                                             </SelectContent>
@@ -201,19 +152,17 @@ export const NewMythrasStdCharacterDialog = () => {
                                 )}
                             />
 
-                            {/* Homeland */}
                             <FormField
                                 control={form.control}
-                                name='data.personal.homeland'
+                                name='personal.homeland'
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Homeland</FormLabel>
+                                        <FormLabel>Terra Natal</FormLabel>
                                         <FormControl>
                                             <Input
                                                 {...field}
                                                 disabled={isPending}
                                                 placeholder='Goiabal'
-                                                className='w-full'
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -221,23 +170,20 @@ export const NewMythrasStdCharacterDialog = () => {
                                 )}
                             />
 
-                            {/* Career */}
                             <FormField
                                 control={form.control}
-                                name='data.personal.career'
+                                name='personal.career'
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Career</FormLabel>
+                                        <FormLabel>Carreira</FormLabel>
                                         <Select
                                             onValueChange={field.onChange}
                                             defaultValue={field.value}
                                             disabled={isPending}
                                         >
-                                            <FormControl className='w-full'>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder='Selecione a carreira' />
-                                                </SelectTrigger>
-                                            </FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Selecione a carreira" />
+                                            </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value='Pedreiro'>Pedreiro</SelectItem>
                                             </SelectContent>
@@ -247,15 +193,13 @@ export const NewMythrasStdCharacterDialog = () => {
                                 )}
                             />
                         </div>
-                        <FormError message={error}/>
-                        <FormSuccess message={success}/>
-                        <DialogFooter className='flex justify-between items-center w-full'>
-                            <Label className='text-left'>Jogador: <p className='text-muted-foreground'>{user?.name}</p></Label>
-                            <Button className='ml-auto' disabled={isPending} type='submit'>Criar</Button>
-                        </DialogFooter>
+
+                        <div className="flex justify-end">
+                            <Button type="submit" disabled={isPending}>
+                                Próximo
+                            </Button>
+                        </div>
                     </form>
                 </Form>
-            </DialogContent>
-        </Dialog>
     );
 };

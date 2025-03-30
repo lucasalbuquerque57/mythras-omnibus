@@ -1,28 +1,13 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import NavBar from "@/app/(protected)/_components/main-navbar/main-nav-bar";
-import {NewMythrasStdCharacterForm} from "@/app/(protected)/_components/mythras-std-character/character-creation-form";
+import {NewCharacterWizard} from "@/app/(protected)/_components/mythras-std-character/new-character-wizard";
+const NewMythrasCharacter = () => {
 
+  return (
+      <div> {/* <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2"> */}
+        <NewCharacterWizard/>
+      </div>
+  );
+};
 
-export default function NewCharacterPage() {
-    const router = useRouter();
-
-
-    return (
-        /*<div className="max-w-4xl mx-auto">
-            <h1 className="text-2xl font-bold mb-6">Create New Character</h1>
-
-            <div className="space-y-8">
-
-
-                 System Selection
-
-            </div>
-        </div>*/
-        <div>
-            <NavBar/>
-            <NewMythrasStdCharacterForm/>
-        </div>
-    );
-}
+export default NewMythrasCharacter;

@@ -2,93 +2,151 @@
 'use server';
 
 import { db } from '@/lib/db';
-import { MythrasCreationSchema, Step1Schema } from '@/schemas/characters/mythras-std/character-creation';
+import { MythrasDataSchema } from '@/schemas/characters/mythras-std';
 import { z } from 'zod';
 
-// I might need to change void to {} if some error appears
-type ActionResponse<T = void> =
-    | { status: 'success'; message: string; data: T }
-    | { status: 'error'; error: string };
-
 export const createMythrasCharacter = async (
-    values: z.infer<typeof MythrasCreationSchema>,
-): Promise<ActionResponse<{ characterId: string }>> => {
-    const validation = MythrasCreationSchema.safeParse(values);
-    if (!validation.success) {
-        return {
-            status: 'error',
-            error: 'Invalid fields! Please check your input values.',
-        };
-    }
-
-    const { userId, system, step, data } = validation.data;
+    values: z.infer<typeof MythrasDataSchema>,
+    characterId?: string,
+) => {
+    const validation = MythrasDataSchema.safeParse(values);
+    if (!validation.success) return { error: 'Invalid data' };
 
     try {
-        const user = await db.user.findUnique({ where: { id: userId }});
-        if (!user) {
-            return {
-                status: 'error',
-                error: 'User not found! Please authenticate first.',
-            };
-        }
+        const result = await db.$transaction(async (prisma) => {
+            if (!validation.data.personal.player) {
+                throw new Error('Player ID is required');
+            }
 
-        switch (step) {
-            case 1:
-                return handleInitialCreation(userId, system, data);
-
-            default:
-                return {
-                    status: 'error',
-                    error: 'Invalid creation step! Please start from step 1.',
-                };
-        }
-    } catch (error) {
-        console.error('Character creation error:', error);
-        return {
-            status: 'error',
-            error: 'Internal server error! Please try again later.',
-        };
-    }
-};
-
-const handleInitialCreation = async (
-    userId: string,
-    system: 'MYTHRAS_STD',
-    data: z.infer<typeof Step1Schema>,
-): Promise<ActionResponse<{ characterId: string }>> => {
-    try {
-        const newCharacter = await db.character.create({
-            data: {
-                userId,
-                system,
-                name: data.personal.name,
-                // temporary measure, it will be actual name of the player, instead of it's ID
-                player: userId,
-                mythrasData: {
-                    personal: data.personal,
-                    characteristics: [],
-                    attributes: [],
-                    hitLocations: [],
-                    skills: {
-                        standard: [],
-                        magic: [],
-                        professional: [],
+            // Base character update/create
+            const baseCharacter = characterId
+                ? await prisma.character.update({
+                    where: { id: characterId },
+                    data: {
+                        name: validation.data.personal.name,
+                        status: 'DRAFT',
                     },
-                    passion: [],
+                })
+                : await prisma.character.create({
+                    data: {
+                        name: validation.data.personal.name,
+                        userId: validation.data.personal.player,
+                        system: 'MYTHRAS_STD',
+                        player: validation.data.personal.player,
+                        status: 'DRAFT',
+                    },
+                });
+
+
+            const mythrasData = {
+                personal: {
+                    create: {
+                            // Required fields with validation
+                            name: validation.data.personal.name,
+                            player: validation.data.personal.player,
+                            gender: validation.data.personal.gender,
+                            species: validation.data.personal.species,
+                            culture: validation.data.personal.culture,
+                            homeland: validation.data.personal.homeland,
+                            career: validation.data.personal.career,
+                            // Numeric field with validation
+                            age: parseInt(validation.data.personal.age || '20'),
+                            // Optional fields
+                            nickname: validation.data.personal.nickname ?? undefined,
+                            religion: validation.data.personal.religion ?? undefined,
+                            deity: validation.data.personal.deity ?? undefined,
+                            socialClass: validation.data.personal.socialClass ?? undefined,
+                            lord: validation.data.personal.lord ?? undefined,
+                            faction: validation.data.personal.faction ?? undefined,
+                            handedness: validation.data.personal.handedness ?? 'Right',
+                            frame: validation.data.personal.frame ?? 'Average',
+                            height: validation.data.personal.height ?? '170cm',
+                            weight: validation.data.personal.weight ?? '70kg',
+                        },
+                    },
+                    characteristics: {
+                        create: validation.data.characteristics.map(c => ({
+                            name: c.name,
+                            original: c.original.toString(),
+                            current: c.current.toString(),
+                        })),
+                    },
+                    attributes: {
+                        create: validation.data.attributes.map(a => ({
+                            name: a.name,
+                            original: a.original,
+                            current: a.current,
+                        })),
+                    },
+                    hitLocations: {
+                        create: validation.data.hitLocations.map(hl => ({
+                            location: hl.location,
+                            armor: hl.armor || '',
+                            hp: hl.hp,
+                            ap: hl.ap || 0,
+                            hpHistory: hl.hpHistory || [],
+                            apHistory: hl.apHistory || [],
+                        })),
+                    },
+                    standardSkills: {
+                        create: validation.data.skills.standard.map(s => ({
+                            name: s.name,
+                            baseValue: s.baseValue,
+                            currentProficiency: s.currentProficiency,
+                            isProficient: s.isProficient,
+                            isFumbled: s.isFumbled || false,
+                        })),
+                    },
+                    magicSkills: {
+                        create: validation.data.skills.magic.map(s => ({
+                            name: s.name,
+                            baseValue: s.baseValue,
+                            currentProficiency: s.currentProficiency,
+                            isProficient: s.isProficient,
+                            isFumbled: s.isFumbled || false,
+                            spellType: s.spellType || 'None', // Ensure string type, it caused some troubles earlier lol
+                        })),
+                    },
+                    professionalSkills: {
+                        create: validation.data.skills.professional.map(s => ({
+                            name: s.name,
+                            baseValue: s.baseValue,
+                            currentProficiency: s.currentProficiency,
+                            isProficient: s.isProficient,
+                            isFumbled: s.isFumbled || false,
+                            specialty: s.specialty,
+                        })),
+                    },
+            };
+
+            await prisma.mythrasStdCharacter.upsert({
+                where: { id: baseCharacter.id },
+                create: { id: baseCharacter.id, ...mythrasData },
+                update: {
+                    // Delete existing relations and recreate
+                    personal: { deleteMany: {}, create: mythrasData.personal.create },
+                    characteristics: { deleteMany: {}, create: mythrasData.characteristics.create },
+                    attributes: { deleteMany: {}, create: mythrasData.attributes.create },
+                    hitLocations: { deleteMany: {}, create: mythrasData.hitLocations.create },
+                    standardSkills: { deleteMany: {}, create: mythrasData.standardSkills.create },
+                    magicSkills: { deleteMany: {}, create: mythrasData.magicSkills.create },
+                    professionalSkills: { deleteMany: {}, create: mythrasData.professionalSkills.create },
                 },
-            },
+            });
+
+
+            return { baseCharacter };
+        }, {
+            maxWait: 30000, // Maximum wait time for the transaction
+            timeout: 30000,  // Overall transaction timeout
         });
 
         return {
-            status: 'success',
-            message: 'Character created successfully!',
-            data: { characterId: newCharacter.id },
+            success: characterId ? 'Character updated!' : 'Character created!',
+            characterId: result.baseCharacter.id,
         };
     } catch (error) {
-        console.error('Database creation error:', error);
-        return {
-            status: 'error',
-            error: 'Failed to create character! Please check your data.',
-        };
+        console.error('Database error:', error);
+        return { error: error instanceof Error ? error.message : 'Database error' };
     }
 };

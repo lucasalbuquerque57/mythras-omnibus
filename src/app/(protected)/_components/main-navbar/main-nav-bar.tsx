@@ -2,11 +2,8 @@
 
 import {
   NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
   NavigationMenuItem,
   NavigationMenuLink,
-  NavigationMenuTrigger,
   NavigationMenuList, navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 import Link from "next/link";
@@ -18,7 +15,7 @@ export const NavBar = () => {
   return (
         <nav
             className={cn("fixed top-0 left-0 right-0 z-50 border-b px-4 py-4 h-14",
-                "flex items-center justify-between")}
+                "flex items-center justify-between dark:bg-slate-950 ")}
         >
           <NavigationMenu>
               <NavigationMenuList>
@@ -42,7 +39,7 @@ export const NavBar = () => {
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="/settings" legacyBehavior passHref>
+                  <Link href="/character/new" legacyBehavior passHref>
                     <NavigationMenuLink
                         className={cn(
                             navigationMenuTriggerStyle(),
