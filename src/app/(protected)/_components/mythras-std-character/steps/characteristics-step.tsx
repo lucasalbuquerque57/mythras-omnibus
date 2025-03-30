@@ -1,4 +1,3 @@
-// app/(protected)/_components/mythras-std-character/characteristics-step.tsx
 'use client';
 
 import { useEffect } from 'react';
@@ -43,25 +42,64 @@ export const CharacteristicsStep = ({
     // Watch all characteristics and recalculate when they change
     const characteristics = form.watch('characteristics');
 
-    useEffect(() => {
-        // Convert characteristics to Record format for calculations
+
+
+
+
+    const handleCalculate = () => {
+        // Reuse the same calculation logic
         const chars = characteristics.reduce((acc, curr) => {
             acc[curr.name as MythrasStdCharacteristicType] = curr.original;
             return acc;
         }, {} as Record<MythrasStdCharacteristicType, number>);
 
-
-        // Calculate derived values
         const calculatedAttributes = calculateAttributes(chars);
         const calculatedHitLocations = calculateHitLocations(chars);
 
-        // Update form values
+        console.log('Manual calculation triggered', {
+            characteristics: chars,
+            attributes: calculatedAttributes,
+            hitLocations: calculatedHitLocations,
+        });
+
+        form.setValue('attributes',
+            Object.entries(calculatedAttributes).map(([name, value]) => ({
+                    name: name as MythrasStdAttributeType,
+                    original: String(value),
+                    current: String(value),
+                }),
+            ));
+
+        form.setValue('hitLocations',
+            calculatedHitLocations.map(loc => ({
+                ...loc,
+                armor: '',
+                hpHistory: [],
+                apHistory: [],
+            })),
+        );
+    };
+    
+    
+    
+    
+
+    useEffect(() => {
+        const chars = characteristics.reduce((acc, curr) => {
+            acc[curr.name as MythrasStdCharacteristicType] = curr.original;
+            return acc;
+        }, {} as Record<MythrasStdCharacteristicType, number>);
+
+        const calculatedAttributes = calculateAttributes(chars); // Assume this returns numbers
+        const calculatedHitLocations = calculateHitLocations(chars);
+
+        // Convert numeric attributes to strings
         form.setValue(
             'attributes',
             Object.entries(calculatedAttributes).map(([name, value]) => ({
                 name: name as MythrasStdAttributeType,
-                original: String(value),
-                current: String(value),
+                original: String(value), // Convert to string
+                current: String(value),  // Convert to string
             })),
         );
 
@@ -75,14 +113,11 @@ export const CharacteristicsStep = ({
             })),
         );
 
-        console.log('Current characteristics:', characteristics);
+        console.log('Calculated Attributes (raw):', calculatedAttributes);
+        console.log('Converted Attributes:', Object.entries(calculatedAttributes).map(([n, v]) => ({ name: n, value: String(v) })));
 
-
-
-        console.log('Parsed characteristics:', chars);
-
-        console.log('Calculated attributes:', calculatedAttributes);
     }, [characteristics, form]);
+
 
     return (
         <Form {...form}>
@@ -119,6 +154,16 @@ export const CharacteristicsStep = ({
                         />
                     ))}
                 </div>
+
+                {/*Testing purposes, I'll remove it later*/}
+                <Button
+                    type="button"
+                    onClick={handleCalculate}
+                    variant="outline"
+                    className="bg-yellow-100 text-yellow-800"
+                >
+                    Calcular Atributos
+                </Button>
 
                 {/* Display calculated attributes */}
                 <div className="space-y-4">
