@@ -8,7 +8,7 @@ interface ProtectedLayoutProps {
 const ProtectedLayout = ({children}) => {
   return (
     <div className="pt-16">
-      {/*<NavBar/>*/}
+      <NavBar/>
       {children}
     </div>
   );

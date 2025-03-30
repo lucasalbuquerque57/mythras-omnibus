@@ -7,6 +7,7 @@ import {
 import {skillFormulas} from "@/lib/systems/mythras-std/skill-formulas";
 
 export const getInitialSkills = (characteristics: ZodAny["_output"][] | undefined) => {
+    // @ts-expect-error it should (could) be undefined because not everyone will have all skills
     const charsMap = characteristics.reduce((acc, curr) => {
         acc[curr.name] = curr.current;
         return acc;
