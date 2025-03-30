@@ -4,7 +4,7 @@ import { signOut } from 'next-auth/react';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import {NewCampaignDialog} from "@/app/(protected)/_components/campaign/new-campaign-dialog";
 import NavBar from "@/app/(protected)/_components/main-navbar/main-nav-bar";
-import {NewMythrasStdCharacterDialog} from "@/app/(protected)/_components/mythras-std-character/new-character-dialog";
+import {NewCharacterWizard} from "@/app/(protected)/_components/mythras-std-character/new-character-wizard";
 
 const SettingsPage = () => {
     const user = useCurrentUser();
@@ -19,7 +19,7 @@ const SettingsPage = () => {
                 Sair
             </button>*/}
             <NewCampaignDialog/>
-            <NewMythrasStdCharacterDialog/>
+            <NewCharacterWizard/>
         </div>
     );
 };
