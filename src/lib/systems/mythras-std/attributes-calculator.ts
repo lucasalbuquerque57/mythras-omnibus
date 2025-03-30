@@ -10,12 +10,12 @@ export const calculateAttributes = (chars: Characteristics) => {
     const cha = chars.Charisma;
 
     return {
-        ActionPoints: Math.floor(intDex / 12) + 1,
+        ActionPoints: Math.ceil(intDex / 12),
         DamageModifier: calculateDamageModifier(strSiz),
-        ExperienceModifier: Math.floor((cha - 6) / 6),
-        HealingRate: Math.floor(con / 6) + 1,
+        ExperienceModifier: Math.ceil(((cha - 6) / 6)-1),
+        HealingRate: Math.ceil(con / 6),
         InitiativeBonus: Math.ceil((chars.Intelligence + chars.Dexterity) / 2),
-        LuckPoints: Math.floor(pow / 6) + 1,
+        LuckPoints: Math.ceil(pow / 6),
         MovementRate: 6,
     };
 };
