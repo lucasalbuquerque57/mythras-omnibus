@@ -5,7 +5,10 @@ import { db } from '@/lib/db';
 import { MythrasDataSchema } from '@/schemas/characters/mythras-std';
 import { z } from 'zod';
 
-export const createMythrasCharacter = async (values: z.infer<typeof MythrasDataSchema>) => {
+export const createMythrasCharacter = async (
+    values: z.infer<typeof MythrasDataSchema>,
+    characterId?: string, // Add optional characterId parameter
+) => {
     const validation = MythrasDataSchema.safeParse(values);
     if (!validation.success) return { error: 'Invalid data' };
 
@@ -15,14 +18,23 @@ export const createMythrasCharacter = async (values: z.infer<typeof MythrasDataS
                 throw new Error('Player ID is required');
             }
 
-            const baseCharacter = await prisma.character.create({
-                data: {
-                    name: validation.data.personal.name,
-                    userId: validation.data.personal.player,
-                    system: 'MYTHRAS_STD',
-                    player: validation.data.personal.player,
-                },
-            });
+            const baseCharacter = characterId
+                ? await prisma.character.update({
+                    where: { id: characterId },
+                    data: {
+                        name: validation.data.personal.name,
+                        // Other updatable fields
+                    },
+                })
+                : await prisma.character.create({
+                    data: {
+                        name: validation.data.personal.name,
+                        userId: validation.data.personal.player,
+                        system: 'MYTHRAS_STD',
+                        player: validation.data.personal.player,
+                        status: 'DRAFT', // Add status field to Character model
+                    },
+                });
 
             const mythrasCharacter = await prisma.mythrasStdCharacter.create({
                 data: {
@@ -121,11 +133,11 @@ export const createMythrasCharacter = async (values: z.infer<typeof MythrasDataS
         });
 
         return {
-            success: 'Character created!',
+            success: characterId ? 'Character updated!' : 'Character created!',
             characterId: result.baseCharacter.id,
         };
     } catch (error) {
         console.error('Database error:', error);
-        return { error: error instanceof Error ? error.message : 'Failed to create character' };
+        return { error: error instanceof Error ? error.message : 'Database error' };
     }
 };

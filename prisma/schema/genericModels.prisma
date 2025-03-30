@@ -9,6 +9,7 @@ model Character {
 
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+  status       String        @default("DRAFT") // draft, active, archived
 
 
   // System-specific relationships (one-to-one)
