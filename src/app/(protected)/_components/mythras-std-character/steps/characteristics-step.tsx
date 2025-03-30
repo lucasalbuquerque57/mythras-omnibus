@@ -19,11 +19,11 @@ interface CharacteristicsStepProps {
 }
 
 export const CharacteristicsStep = ({
-                                        initialValues,
-                                        onSubmit,
-                                        onBack,
-                                        isPending,
-                                    }: CharacteristicsStepProps) => {
+    initialValues,
+    onSubmit,
+    onBack,
+    isPending,
+}: CharacteristicsStepProps) => {
     const form = useForm<z.infer<typeof MythrasDataSchema>>({
         defaultValues: {
             ...initialValues,
@@ -39,15 +39,11 @@ export const CharacteristicsStep = ({
         },
     });
 
-    // Watch all characteristics and recalculate when they change
+    // Watch all characteristics and recalculate when they change, but for some reason it is not working as of now
     const characteristics = form.watch('characteristics');
 
 
-
-
-
     const handleCalculate = () => {
-        // Reuse the same calculation logic
         const chars = characteristics.reduce((acc, curr) => {
             acc[curr.name as MythrasStdCharacteristicType] = curr.original;
             return acc;
@@ -93,13 +89,13 @@ export const CharacteristicsStep = ({
         const calculatedAttributes = calculateAttributes(chars); // Assume this returns numbers
         const calculatedHitLocations = calculateHitLocations(chars);
 
-        // Convert numeric attributes to strings
+        // Convert num to string
         form.setValue(
             'attributes',
             Object.entries(calculatedAttributes).map(([name, value]) => ({
                 name: name as MythrasStdAttributeType,
-                original: String(value), // Convert to string
-                current: String(value),  // Convert to string
+                original: String(value),
+                current: String(value),
             })),
         );
 
@@ -145,6 +141,7 @@ export const CharacteristicsStep = ({
                                                 field.onChange(value);
                                                 form.setValue(`characteristics.${index}.current`, value);
                                             }}
+                                            onBlur={handleCalculate} /*migiht cause performance issues on my free server*/
                                             disabled={isPending}
                                         />
                                     </FormControl>
@@ -155,15 +152,15 @@ export const CharacteristicsStep = ({
                     ))}
                 </div>
 
-                {/*Testing purposes, I'll remove it later*/}
-                <Button
+                {/*Testing purposes, but this button might be needed if the onBlur makes the website's server overloaded, I'll check it later*/}
+                {/*<Button
                     type="button"
                     onClick={handleCalculate}
                     variant="outline"
                     className="bg-yellow-100 text-yellow-800"
                 >
                     Calcular Atributos
-                </Button>
+                </Button>*/}
 
                 {/* Display calculated attributes */}
                 <div className="space-y-4">
