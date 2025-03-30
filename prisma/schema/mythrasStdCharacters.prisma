@@ -113,8 +113,6 @@ enum MythrasStdProfessionalSkillType {
   Track
 }
 
-/*
-
 model MythrasStdCharacter {
   id              String        @id @default(cuid())
   character       Character     @relation(fields: [id], references: [id])
@@ -140,21 +138,21 @@ model MythrasStdCharacterPersonal {
   name            String
   player          String
   nickname        String?
-  age             Int
+  age             Int?
   gender          String
   species         String
   culture         String
   homeland        String
-  religion        String
+  religion        String?
   deity           String?
   socialClass     String?
   lord            String?
   career          String
   faction         String?
-  handedness      String
-  frame           String
-  height          String
-  weight          String
+  handedness      String?
+  frame           String?
+  height          String?
+  weight          String?
 }
 
 
@@ -225,4 +223,4 @@ model MythrasStdProfessionalSkill {
   @@unique([characterId, name, specialty]) // Composite uniqueness
   @@index([characterId])
   @@index([name])
-}*/
+}

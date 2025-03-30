@@ -14,7 +14,7 @@ import {
 export const MythrasDataSchema = z.object({
     personal: z.object({
         name: z.string().min(3).max(40),
-        player: z.string().min(3).max(40).optional(),
+        player: z.string().min(3),
         nickname: z.string().max(40).optional(),
         age: z.string().optional(),
         gender: z.string().min(1).max(11),
