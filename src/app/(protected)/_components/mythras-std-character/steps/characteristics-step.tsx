@@ -11,6 +11,7 @@ import { MythrasStdCharacteristicType, MythrasStdAttributeType } from '@prisma/c
 import { z } from 'zod';
 import { MythrasDataSchema } from '@/schemas/characters/mythras-std';
 
+
 interface CharacteristicsStepProps {
     initialValues: z.infer<typeof MythrasDataSchema>;
     onSubmit: (values: z.infer<typeof MythrasDataSchema>) => void;
@@ -27,6 +28,10 @@ export const CharacteristicsStep = ({
     const form = useForm<z.infer<typeof MythrasDataSchema>>({
         defaultValues: {
             ...initialValues,
+            personal: {
+                ...initialValues.personal,
+                species: initialValues.personal.species, // Default if not provided
+            },
             characteristics: initialValues.characteristics?.length
                 ? initialValues.characteristics
                 : Object.values(MythrasStdCharacteristicType).map(name => ({
@@ -49,8 +54,8 @@ export const CharacteristicsStep = ({
             return acc;
         }, {} as Record<MythrasStdCharacteristicType, number>);
 
-        const calculatedAttributes = calculateAttributes(chars);
-        const calculatedHitLocations = calculateHitLocations(chars);
+        const calculatedAttributes = calculateAttributes(chars, form.getValues('personal.species'));
+        const calculatedHitLocations = calculateHitLocations(chars, form.getValues('personal.species'));
 
         console.log('Manual calculation triggered', {
             characteristics: chars,
@@ -67,6 +72,7 @@ export const CharacteristicsStep = ({
             ));
 
         form.setValue('hitLocations',
+            // @ts-expect-error This the only way currently to not force every single PC to have a Tail
             calculatedHitLocations.map(loc => ({
                 ...loc,
                 armor: '',
@@ -86,8 +92,8 @@ export const CharacteristicsStep = ({
             return acc;
         }, {} as Record<MythrasStdCharacteristicType, number>);
 
-        const calculatedAttributes = calculateAttributes(chars); // Assume this returns numbers
-        const calculatedHitLocations = calculateHitLocations(chars);
+        const calculatedAttributes = calculateAttributes(chars, form.watch('personal.species'));
+        const calculatedHitLocations = calculateHitLocations(chars, form.getValues('personal.species'));
 
         // Convert num to string
         form.setValue(
@@ -101,6 +107,7 @@ export const CharacteristicsStep = ({
 
         form.setValue(
             'hitLocations',
+            // @ts-expect-error This the only way currently to not force every single PC to have a Tail
             calculatedHitLocations.map(loc => ({
                 ...loc,
                 armor: '',
@@ -118,7 +125,8 @@ export const CharacteristicsStep = ({
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
+                <div>{form.watch('personal.species')}</div> {/*I should remove this later*/}
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2">
                     {characteristics.map((char, index) => (
                         <FormField
                             key={char.name}
@@ -133,6 +141,7 @@ export const CharacteristicsStep = ({
                                         <Input
                                             {...field}
                                             type="number"
+                                            className="w-full "
                                             min="1"
                                             max="99"
                                             value={field.value}
@@ -164,14 +173,28 @@ export const CharacteristicsStep = ({
 
                 {/* Display calculated attributes */}
                 <div className="space-y-4">
-                    <h3 className="font-semibold">Atributos Calculados</h3>
+                    <h3 className="font-semibold">Atributos</h3>
                     <div className="grid grid-cols-3 gap-4">
                         {form.watch('attributes').map((attr) => (
                             <div key={attr.name} className="border p-3 rounded-lg">
-                                <p className="text-sm font-medium capitalize">
+                                <p className="text-xs sm:text-sm md:text-base font-medium capitalize">
                                     {attr.name.replace(/([A-Z])/g, ' $1').trim()}
                                 </p>
-                                <p className="text-lg font-semibold">{attr.original}</p>
+                                <p className="text-lg sm:text-sm md:text-base font-semibold truncate">{attr.original}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="space-y-4">
+                    <h3 className="font-semibold">Hit Locations</h3>
+                    <div className="grid grid-cols-4 gap-4">
+                        {form.watch('hitLocations').map((attr) => (
+                            <div key={attr.location} className="border p-3 rounded-lg">
+                                <p className="text-xs sm:text-sm md:text-base font-medium capitalize">
+                                    {attr.location.replace(/([A-Z])/g, ' $1').trim()}
+                                </p>
+                                <p className="text-lg sm:text-sm md:text-base font-semibold truncate">{attr.hp}</p>
                             </div>
                         ))}
                     </div>

@@ -15,22 +15,7 @@ type FullCharacter = Character & {
 };
 
 export const transformCharacter = (
-    prismaCharacter: Prisma.Prisma__CharacterClient<GetResult<Prisma.$CharacterPayload<DefaultArgs>, {
-        where: { id: string; status: string; mythrasDetails: { isNot: null } };
-        include: {
-            mythrasDetails: {
-                include: {
-                    personal: boolean;
-                    characteristics: boolean;
-                    attributes: boolean;
-                    hitLocations: boolean;
-                    standardSkills: boolean;
-                    magicSkills: boolean;
-                    professionalSkills: boolean
-                }
-            }
-        }
-    }, "findUnique", Prisma.PrismaClientOptions> | null, null, DefaultArgs, Prisma.PrismaClientOptions>,
+    prismaCharacter: FullCharacter,
 ): MythrasCharacterData => {
     if (!prismaCharacter.mythrasDetails) {
         throw new Error('Invalid character data: Missing Mythras details');

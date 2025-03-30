@@ -54,13 +54,10 @@ export const PersonalInfoStep = ({ onSubmit, isPending }: PersonalInfoStepProps)
             passion: [],
         },
     });
-
-
-
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                        <div className='space-y-4'>
+                        <div className='space-y-4 w-full'>
                             {/* Personal Information Fields */}
                             <FormField
                                 control={form.control}
@@ -120,8 +117,11 @@ export const PersonalInfoStep = ({ onSubmit, isPending }: PersonalInfoStepProps)
                                                 <SelectValue placeholder="Selecione a espécie" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value='Human'>Humano</SelectItem>
-                                                <SelectItem value='Dwarf'>Anão</SelectItem>
+                                                <SelectItem value='Humano'>Humano</SelectItem>
+                                                <SelectItem value='Anão'>Anão</SelectItem>
+                                                <SelectItem value='Metadílio'>Metadílio</SelectItem>
+                                                <SelectItem value='Vargr'>Vargr</SelectItem>
+                                                <SelectItem value='Vran'>Vran</SelectItem>
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />

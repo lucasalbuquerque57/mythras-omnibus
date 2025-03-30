@@ -1,8 +1,8 @@
-import { MythrasStdCharacteristicType } from "@prisma/client";
+import {MythrasStdCharacteristicType} from "@prisma/client";
 
 type Characteristics = Record<MythrasStdCharacteristicType, number>;
 
-export const calculateAttributes = (chars: Characteristics) => {
+export const calculateAttributes = (chars: Characteristics, species: string) => {
     const intDex = chars.Intelligence + chars.Dexterity;
     const strSiz = chars.Strength + chars.Size;
     const con = chars.Constitution;
@@ -16,8 +16,16 @@ export const calculateAttributes = (chars: Characteristics) => {
         HealingRate: Math.ceil(con / 6),
         InitiativeBonus: Math.ceil((chars.Intelligence + chars.Dexterity) / 2),
         LuckPoints: Math.ceil(pow / 6),
-        MovementRate: 6,
+        MovementRate: move(species),
     };
+};
+
+const move = (species: string) => {
+
+    if (species === "Anão") return "4.5";
+    if (species === "Halfling") return "4.5";
+    return "6";
+
 };
 
 const calculateDamageModifier = (sum: number) => {
