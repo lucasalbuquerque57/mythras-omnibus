@@ -136,6 +136,9 @@ export const createMythrasCharacter = async (
 
 
             return { baseCharacter };
+        }, {
+            maxWait: 30000, // Maximum wait time for the transaction
+            timeout: 30000,  // Overall transaction timeout
         });
 
         return {
