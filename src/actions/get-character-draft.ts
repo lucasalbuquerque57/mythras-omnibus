@@ -1,10 +1,17 @@
+"use server";
+
 // actions/get-character-draft.ts
-import {db} from "@/lib/db";
+import { db } from "@/lib/db";
+import "server-only";
 
 export const getCharacterDraft = async (characterId: string) => {
     try {
         return await db.character.findUnique({
-            where: { id: characterId, status: 'DRAFT' },
+            where: {
+                id: characterId,
+                status: 'DRAFT',
+                mythrasDetails: { isNot: null }, // Ensure mythrasDetails exists
+            },
             include: {
                 mythrasDetails: {
                     include: {
