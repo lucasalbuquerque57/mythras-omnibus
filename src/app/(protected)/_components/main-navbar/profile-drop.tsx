@@ -19,14 +19,14 @@ export const ProfileDropdowns = () => {
     return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            {/*<Button variant="ghost" className="relative h-8 w-8 rounded-full">*/}
+            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
               <Avatar >
                 <AvatarImage src={user?.image || ''} alt="@bearnardo" />
                 <AvatarFallback>
                   <ShieldUser strokeWidth={1.5} />
                 </AvatarFallback>
               </Avatar>
-            {/*</Button>*/}
+            </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="end" forceMount>
             <DropdownMenuLabel className="font-normal">

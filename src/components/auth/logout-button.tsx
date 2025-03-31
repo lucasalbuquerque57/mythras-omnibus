@@ -7,7 +7,7 @@ interface LogoutButtonProps {
 };
 
 export const LogoutButton = ({
-  children
+  children,
 }: LogoutButtonProps) => {
   const onClick = () => {
     signOut();

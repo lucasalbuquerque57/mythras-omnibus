@@ -88,35 +88,48 @@ export const createMythrasCharacter = async (
                             apHistory: hl.apHistory || [],
                         })),
                     },
-                    standardSkills: {
-                        create: validation.data.skills.standard.map(s => ({
-                            name: s.name,
-                            baseValue: s.baseValue,
-                            currentProficiency: s.currentProficiency,
-                            isProficient: s.isProficient,
-                            isFumbled: s.isFumbled || false,
-                        })),
-                    },
-                    magicSkills: {
-                        create: validation.data.skills.magic.map(s => ({
-                            name: s.name,
-                            baseValue: s.baseValue,
-                            currentProficiency: s.currentProficiency,
-                            isProficient: s.isProficient,
-                            isFumbled: s.isFumbled || false,
-                            spellType: s.spellType || 'None', // Ensure string type, it caused some troubles earlier lol
-                        })),
-                    },
-                    professionalSkills: {
-                        create: validation.data.skills.professional.map(s => ({
-                            name: s.name,
-                            baseValue: s.baseValue,
-                            currentProficiency: s.currentProficiency,
-                            isProficient: s.isProficient,
-                            isFumbled: s.isFumbled || false,
-                            specialty: s.specialty,
-                        })),
-                    },
+                standardSkills: {
+                    create: validation.data.standardSkills.map(s => ({
+                        name: s.name,
+                        baseValue: s.baseValue,
+                        currentProficiency: s.currentProficiency,
+                        totalAddedPoints: s.totalAddedPoints ?? 0,
+                        culturePoints: s.culturePoints ?? 0,
+                        careerPoints: s.careerPoints ?? 0,
+                        bonusPoints: s.bonusPoints ?? 0,
+                        isProficient: s.isProficient,
+                        isFumbled: s.isFumbled ?? false,
+                    })),
+                },
+                magicSkills: {
+                    // @ts-expect-error This is okay because I don't want magicSkills to be mandatory
+                    create: validation.data.magicSkills.map(s => ({
+                        name: s.name,
+                        baseValue: s.baseValue,
+                        currentProficiency: s.currentProficiency,
+                        totalAddedPoints: s.totalAddedPoints ?? 0,
+                        culturePoints: s.culturePoints ?? 0,
+                        careerPoints: s.careerPoints ?? 0,
+                        bonusPoints: s.bonusPoints ?? 0,
+                        isProficient: s.isProficient,
+                        isFumbled: s.isFumbled ?? false,
+                        spellType: s.spellType ?? 'None',
+                    })),
+                },
+                professionalSkills: {
+                    create: validation.data.professionalSkills.map(s => ({
+                        name: s.name,
+                        baseValue: s.baseValue,
+                        currentProficiency: s.currentProficiency,
+                        totalAddedPoints: s.totalAddedPoints ?? 0,
+                        culturePoints: s.culturePoints ?? 0,
+                        careerPoints: s.careerPoints ?? 0,
+                        bonusPoints: s.bonusPoints ?? 0,
+                        isProficient: s.isProficient,
+                        isFumbled: s.isFumbled ?? false,
+                        specialty: s.specialty ?? undefined,
+                    })),
+                },
             };
 
             await prisma.mythrasStdCharacter.upsert({

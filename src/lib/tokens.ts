@@ -72,7 +72,7 @@ export const generateVerificationToken = async (email: string | undefined) => {
 
     const verificationToken = await db.verificationToken.create({
         data: {
-            // @ts-ignore might cause an error
+            // @ts-expect-error might cause an error
             email,
             token,
             expires,
