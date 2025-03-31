@@ -4,11 +4,11 @@ import { z } from "zod";
 
 import { db } from "@/lib/db";
 import { CampaignSchema } from "@/schemas/campaigns";
-import { currentUser } from "@/lib/auth";
+/*import { currentUser } from "@/lib/auth";*/
 
 
 export async function POST(req: Request) {
-    const user = await currentUser();
+    /*const user = await currentUser();*/
 
     try {
         const json = await req.json();

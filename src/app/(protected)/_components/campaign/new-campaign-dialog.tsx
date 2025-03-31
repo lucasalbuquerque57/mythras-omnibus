@@ -63,7 +63,12 @@ export const NewCampaignDialog = () => {
                     setSuccess(data.success);
                 })
                 .catch((error) => {
-                    setError('An unexpected error occurred');
+                    const errorMessage = error instanceof Error
+                        ? error.message
+                        : 'Um erro inesperado aconteceu!';
+                    setError(errorMessage);
+
+                    console.error('Erro ao criar a campanha:', error);
                 });
         });
     };
@@ -71,10 +76,6 @@ export const NewCampaignDialog = () => {
     useEffect(() => {
         console.log(form.formState.errors);
     }, [form.formState.errors]);
-
-    // I don't need this log anymore
-    /*const systemValue = form.watch('system');
-    console.log('System value:', systemValue);*/
 
     return (
         <Dialog>
