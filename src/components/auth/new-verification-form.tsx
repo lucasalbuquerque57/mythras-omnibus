@@ -29,7 +29,7 @@ export const NewVerificationForm = () => {
             })
             .catch(() => {
                 setError('Algo deu errado!');
-            })
+            });
     }, [token]);
 
     useEffect(() => {
@@ -52,5 +52,5 @@ export const NewVerificationForm = () => {
             </div>
         </CardWrapper>
 
-    )
-}
+    );
+};

@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 
 const font = Poppins ({
     subsets: ['latin'],
-    weight: ['600']
+    weight: ['600'],
 });
 
 interface HeaderProps {
@@ -20,5 +20,5 @@ export const Header = ({ label }: HeaderProps) => {
                 {label}
             </p>
         </div>
-    )
-}
+    );
+};
