@@ -27,8 +27,8 @@ export const newVerification = async (token: string)=> {
         where: { id: existingUser.id},
         data: {
             emailVerified: new Date(),
-            email: existingToken.email
-        }
+            email: existingToken.email,
+        },
     });
 
     await db.verificationToken.delete({
@@ -37,4 +37,4 @@ export const newVerification = async (token: string)=> {
 
     return { success: 'E-mail verificado!' };
 
-}
+};

@@ -11,7 +11,7 @@ export const Social = () => {
         signIn(provider, {
             callback: DEFAULT_LOGIN_REDIRECT,
         });
-    }
+    };
 
     return (
         <div className='flex items-center w-full gap-x-2'>
@@ -32,5 +32,5 @@ export const Social = () => {
                 <FaDiscord className='h-5 w-5' />
             </Button>
         </div>
-    )
-}
+    );
+};

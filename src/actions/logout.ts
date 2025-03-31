@@ -16,4 +16,4 @@ export const logout = async () => {
     * */
 
     await signOut();
-}
+};

@@ -2,7 +2,7 @@ import {CircleCheck} from 'lucide-react';
 
 interface FormSuccessProps {
     message?: string;
-};
+}
 
 export const FormSuccess = ({message}: FormSuccessProps) => {
     if (!message) return null;
@@ -11,5 +11,5 @@ export const FormSuccess = ({message}: FormSuccessProps) => {
             <CircleCheck className='h-4 w-4' />
             <p>{message}</p>
         </div>
-    )
-}
+    );
+};
