@@ -9,9 +9,8 @@ import React from "react";
 export default async function NewCharacterPage({
    params,
 }: {
-    params: { characterId: string };
+    params: Promise<{ characterId: string }>;
 }) {
-    // Await the params before using them, I forgot this little shit and my terminal was going nuts
     const resolvedParams = await params;
     const characterId = resolvedParams.characterId;
 
@@ -39,3 +38,4 @@ export default async function NewCharacterPage({
         return notFound();
     }
 }
+

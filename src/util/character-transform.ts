@@ -4,13 +4,13 @@ import { Character, MythrasStdCharacter } from "@prisma/client";
 
 type FullCharacter = Character & {
     mythrasDetails: MythrasStdCharacter & {
-        personal: any[];
-        characteristics: any[];
-        attributes: any[];
-        hitLocations: any[];
-        standardSkills: any[];
-        magicSkills: any[];
-        professionalSkills: any[];
+        personal: MythrasCharacterData["personal"][];
+        characteristics: MythrasCharacterData["characteristics"];
+        attributes: MythrasCharacterData["attributes"];
+        hitLocations: MythrasCharacterData["hitLocations"];
+        standardSkills: MythrasCharacterData["standardSkills"];
+        professionalSkills: MythrasCharacterData["professionalSkills"];
+        magicSkills: MythrasCharacterData["magicSkills"];
     };
 };
 
@@ -62,31 +62,43 @@ export const transformCharacter = (
             hpHistory: hl.hpHistory || [],
             apHistory: hl.apHistory || [],
         })),
-        skills: {
-            standard: details.standardSkills.map(s => ({
-                name: s.name,
-                baseValue: s.baseValue,
-                currentProficiency: s.currentProficiency,
-                isProficient: s.isProficient,
-                isFumbled: s.isFumbled || false,
-            })),
-            magic: details.magicSkills.map(s => ({
-                name: s.name,
-                baseValue: s.baseValue,
-                currentProficiency: s.currentProficiency,
-                isProficient: s.isProficient,
-                isFumbled: s.isFumbled || false,
-                spellType: s.spellType || 'None',
-            })),
-            professional: details.professionalSkills.map(s => ({
-                name: s.name,
-                baseValue: s.baseValue,
-                currentProficiency: s.currentProficiency,
-                isProficient: s.isProficient,
-                isFumbled: s.isFumbled || false,
-                specialty: s.specialty || undefined,
-            })),
-        },
-        passion: [], // Add this if your schema requires it
+        // Updated skill sections
+        standardSkills: details.standardSkills.map(s => ({
+            name: s.name,
+            baseValue: s.baseValue,
+            currentProficiency: s.currentProficiency,
+            totalAddedPoints: s.totalAddedPoints ?? undefined,
+            culturePoints: s.culturePoints ?? undefined,
+            careerPoints: s.careerPoints ?? undefined,
+            bonusPoints: s.bonusPoints ?? undefined,
+            isProficient: s.isProficient,
+            isFumbled: s.isFumbled ?? false,
+        })),
+        // @ts-expect-error It is possibly undefined because I want to prevent bugs where people are forced to have MagicSkills
+        magicSkills: details.magicSkills.map(s => ({
+            name: s.name,
+            baseValue: s.baseValue,
+            currentProficiency: s.currentProficiency,
+            totalAddedPoints: s.totalAddedPoints ?? undefined,
+            culturePoints: s.culturePoints ?? undefined,
+            careerPoints: s.careerPoints ?? undefined,
+            bonusPoints: s.bonusPoints ?? undefined,
+            isProficient: s.isProficient,
+            isFumbled: s.isFumbled ?? false,
+            spellType: s.spellType ?? undefined,
+        })),
+        professionalSkills: details.professionalSkills.map(s => ({
+            name: s.name,
+            baseValue: s.baseValue,
+            currentProficiency: s.currentProficiency,
+            totalAddedPoints: s.totalAddedPoints ?? undefined,
+            culturePoints: s.culturePoints ?? undefined,
+            careerPoints: s.careerPoints ?? undefined,
+            bonusPoints: s.bonusPoints ?? undefined,
+            isProficient: s.isProficient,
+            isFumbled: s.isFumbled ?? false,
+            specialty: s.specialty ?? undefined,
+        })),
+        passion: [], // Maintain existing passion structure
     };
 };

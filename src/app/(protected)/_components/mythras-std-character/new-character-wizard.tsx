@@ -35,25 +35,43 @@ export const NewCharacterWizard = ({
     }, [characterId, initialData]);
 
     const handlePersonalSubmit = (values: z.infer<typeof MythrasDataSchema>) => {
+        setError(undefined);
+        setSuccess(undefined);
+
         startTransition(async () => {
-            const response = await createMythrasCharacter(values);
-            if (response?.success) {
-                router.push(`/character/new/${response.characterId}`);
-            }
-            if (response?.error) {
-                setError(response.error);
+            try {
+                const response = await createMythrasCharacter(values);
+                if (response?.success) {
+                    setSuccess('Character created successfully!');
+                    router.push(`/character/new/${response.characterId}`);
+                }
+                if (response?.error) {
+                    setError(response.error);
+                }
+            } catch (error) {
+                console.error('Operation failed:', error);  // Actually use the error
+                setError('An unexpected error occurred');
             }
         });
     };
 
     const handleFinalSubmit = (values: z.infer<typeof MythrasDataSchema>) => {
+        setError(undefined);
+        setSuccess(undefined);
+
         startTransition(async () => {
-            const response = await createMythrasCharacter(values, characterId);
-            if (response?.success) {
-                router.push(`/character/${response.characterId}`);
-            }
-            if (response?.error) {
-                setError(response.error);
+            try {
+                const response = await createMythrasCharacter(values, characterId);
+                if (response?.success) {
+                    setSuccess('Character updated successfully!');
+                    router.push(`/character/${response.characterId}`);
+                }
+                if (response?.error) {
+                    setError(response.error);
+                }
+            } catch (error) {
+                console.error('Operation failed:', error);  // Actually use the error
+                setError('An unexpected error occurred');
             }
         });
     };

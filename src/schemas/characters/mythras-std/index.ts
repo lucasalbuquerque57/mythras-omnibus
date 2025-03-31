@@ -3,13 +3,10 @@ import {
     MythrasStdCharacteristicType,
     MythrasStdAttributeType,
     MythrasStdHitLocationType,
-    MythrasStdStandardSkillType,
-    MythrasStdMagicSkillType,
-    MythrasStdProfessionalSkillType,
 } from '@prisma/client';
-//import { SPECIES_CONFIG } from '@/lib/systems/mythras-std/species-config';
+import {magicSkillSchema, professionalSkillSchema, standardSkillSchema} from "@/schemas/characters/mythras-std/skills";
 
-
+/* MAIN STUFF */
 
 export const MythrasDataSchema = z.object({
     personal: z.object({
@@ -71,49 +68,9 @@ export const MythrasDataSchema = z.object({
             ).optional(),
         }),
     ),
-    skills: z.object({
-        standard: z.array(
-            z.object({
-                name: z.nativeEnum(MythrasStdStandardSkillType),
-                baseValue: z.number().int().positive(),
-                currentProficiency: z.number().int().positive(),
-                totalAddedPoints: z.number().int().nonnegative().optional(), // maybe it should not be optional
-                culturePoints: z.number().int().positive().optional(),
-                careerPoints: z.number().int().positive().optional(),
-                bonusPoints: z.number().int().positive().optional(),
-                isProficient: z.boolean(),
-                isFumbled: z.boolean().optional(),
-            }),
-        ),
-        magic: z.array(
-            z.object({
-                name: z.nativeEnum(MythrasStdMagicSkillType),
-                baseValue: z.number().int().positive(),
-                currentProficiency: z.number().int().positive(),
-                totalAddedPoints: z.number().int().nonnegative().optional(), // maybe it should not be optional
-                culturePoints: z.number().int().positive().optional(),
-                careerPoints: z.number().int().positive().optional(),
-                bonusPoints: z.number().int().positive().optional(),
-                isProficient: z.boolean(),
-                isFumbled: z.boolean().optional(),
-                spellType: z.string().optional(),
-            }),
-        ),
-        professional: z.array(
-            z.object({
-                name: z.nativeEnum(MythrasStdProfessionalSkillType),
-                baseValue: z.number().int().positive(),
-                currentProficiency: z.number().int().positive(),
-                totalAddedPoints: z.number().int().nonnegative().optional(), // maybe it should not be optional
-                culturePoints: z.number().int().positive().optional(),
-                careerPoints: z.number().int().positive().optional(),
-                bonusPoints: z.number().int().positive().optional(),
-                isProficient: z.boolean(),
-                isFumbled: z.boolean().optional(),
-                specialty: z.string().optional(),
-            }),
-        ),
-    }),
+    standardSkills: z.array(standardSkillSchema),
+    magicSkills: z.array(magicSkillSchema).optional(),
+    professionalSkills: z.array(professionalSkillSchema),
     passion: z.array(
         z.object({
             name: z.string().optional(),
@@ -125,9 +82,25 @@ export const MythrasDataSchema = z.object({
     ),
 });
 
+
 export type MythrasCharacterData = z.infer<typeof MythrasDataSchema>;
 
 
+/*
+
+export const Skills = MythrasDataSchema.pick({
+    personal: true,
+}).extend({
+    personal: MythrasDataSchema.shape.personal.pick({
+        name: true,
+        gender: true,
+        species: true,
+        culture: true,
+        homeland: true,
+        career: true,
+    }),
+});
+*/
 
 
 
