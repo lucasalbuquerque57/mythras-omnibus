@@ -21,8 +21,8 @@ export const login = async (values: z.infer<typeof LoginSchema>) => { // ✅ Add
     const validatedFields =  LoginSchema.safeParse(values);
     if (!validatedFields.success){
         return {
-            error: 'Campos inválidos!'
-        }
+            error: 'Campos inválidos!',
+        };
     }
     const {email, password, code} = validatedFields.data;
     const existingUser = await getUserByEmail(email);
@@ -48,7 +48,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => { // ✅ Add
             const twoFactorToken = await getTwoFactorTokenByEmail(existingUser.email);
 
             if (!twoFactorToken){
-                return { error: 'Código inválido!' }
+                return { error: 'Código inválido!' };
             }
 
             if (twoFactorToken.token !== code){
@@ -62,25 +62,25 @@ export const login = async (values: z.infer<typeof LoginSchema>) => { // ✅ Add
             }
 
             await db.twoFactorToken.delete({
-                where: { id: twoFactorToken.id }
-            })
+                where: { id: twoFactorToken.id },
+            });
 
             const existingConfirmation = await getTwoFactorConfirmationByUserId(existingUser.id);
             if (existingConfirmation){
                 await db.twoFactorConfirmation.delete({
-                    where: { id: existingConfirmation.id }
+                    where: { id: existingConfirmation.id },
                 });
             }
 
             await db.twoFactorConfirmation.create({
                 data: {
-                    userId: existingUser.id
-                }
+                    userId: existingUser.id,
+                },
             });
 
         } else {
 
-            const twoFactorToken = await generateTwoFactorToken(existingUser.email)
+            const twoFactorToken = await generateTwoFactorToken(existingUser.email);
             await sendTwoFactorTokenEmail(
                 twoFactorToken.email,
                 twoFactorToken.token,
@@ -99,11 +99,11 @@ export const login = async (values: z.infer<typeof LoginSchema>) => { // ✅ Add
         if (error instanceof AuthError) {
             switch (error.type) {
                 case 'CredentialsSignin':
-                    return {error: 'Credenciais inválidas!'}
+                    return {error: 'Credenciais inválidas!'};
                 default:
-                    return { error: 'Algo deu errado...'}
+                    return { error: 'Algo deu errado...'};
             }
         }
         throw error;
     }
-}
+};

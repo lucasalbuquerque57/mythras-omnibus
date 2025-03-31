@@ -1,4 +1,4 @@
-'use server'
+'use server';
 
 import * as z from 'zod';
 import bcrypt from 'bcryptjs';
@@ -14,7 +14,7 @@ export const newPassword = async (
     token?: string | null,
     ) => {
     if (!token) {
-        return { error: 'Cadê o token?' }
+        return { error: 'Cadê o token?' };
     }
 
     const validatedFields = ResetPasswordSchema.safeParse(values);
@@ -28,19 +28,19 @@ export const newPassword = async (
     const existingToken = await getPasswordResetByToken(token);
 
     if (!existingToken) {
-        return { error: 'Token inválido!' }
+        return { error: 'Token inválido!' };
     }
 
     const hasExpired = new Date(existingToken.expires) < new Date();
 
     if (hasExpired) {
-        return { error: 'Token expirado!' }
+        return { error: 'Token expirado!' };
     }
 
     const existingUser = await getUserByEmail(existingToken.email);
 
     if (!existingUser) {
-        return { error: 'E-mail não existe!' }
+        return { error: 'E-mail não existe!' };
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -51,8 +51,8 @@ export const newPassword = async (
     });
 
     await db.passwordResetToken.delete({
-        where: { id: existingToken.id }
-    })
+        where: { id: existingToken.id },
+    });
 
     return { success: 'Senha atualizada!' };
-}
+};

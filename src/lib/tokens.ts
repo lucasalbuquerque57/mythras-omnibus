@@ -15,8 +15,8 @@ export const generateTwoFactorToken = async (email: string) => {
     if (existingToken) {
         await db.twoFactorToken.delete({
             where: {
-                id: existingToken.id
-            }
+                id: existingToken.id,
+            },
         });
     }
 
@@ -25,11 +25,11 @@ export const generateTwoFactorToken = async (email: string) => {
             email,
             token,
             expires,
-        }
+        },
     });
 
     return twoFactorToken;
-}
+};
 
 export const generatePasswordResetToken = async (email: string | undefined) => {
     const token = uuidv4();
@@ -39,22 +39,21 @@ export const generatePasswordResetToken = async (email: string | undefined) => {
 
     if (existingToken) {
         await db.passwordResetToken.delete({
-            // @ts-ignore Yes it is possibly null, but that's ok
-            where: { id: existingToken.id }
+            where: { id: existingToken.id },
         });
     }
 
     const passwordResetToken = await db.passwordResetToken.create({
         data: {
-            // @ts-ignore might cause an error
+            // @ts-expect-error undefined error, will check this later
             email,
             token,
-            expires
-        }
+            expires,
+        },
     });
 
     return passwordResetToken;
-}
+};
 
 // Those two are separated mostly for security, just like in the prisma schema
 
@@ -67,7 +66,7 @@ export const generateVerificationToken = async (email: string | undefined) => {
         await db.verificationToken.delete({
             where: {
                 id: existingToken.id,
-            }
+            },
         });
     }
 
@@ -77,7 +76,7 @@ export const generateVerificationToken = async (email: string | undefined) => {
             email,
             token,
             expires,
-        }
+        },
     });
     return verificationToken;
-}
+};
