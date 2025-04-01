@@ -99,6 +99,6 @@ export const transformCharacter = (
             isFumbled: s.isFumbled ?? false,
             specialty: s.specialty ?? undefined,
         })),
-        passion: [], // Maintain existing passion structure
+        /*passion: [],*/ // Maintain existing passion structure
     };
 };
