@@ -178,7 +178,6 @@ export const SkillsStep = ({
         isChecked: boolean,
     ) => {
         const skills = form.getValues(skillType);
-        //@ts-expect-error sometimes TS flags this, sometimes not, it is bugged and will flag this comment sometimes
         const newSkills = [...skills];
         newSkills[index] = {
             ...newSkills[index],
