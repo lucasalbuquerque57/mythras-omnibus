@@ -33,8 +33,12 @@ export const SkillsStep = ({
     const [baseCareerPoints, setBaseCareerPoints] = useState(100);
     const [baseBonusPoints, setBaseBonusPoints] = useState(150);
 
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [culturePoints, setCulturePoints] = useState(baseCulturePoints);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [careerPoints, setCareerPoints] = useState(baseCareerPoints);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [bonusPoints, setBonusPoints] = useState(baseBonusPoints);
 
     // Initialize form with current values
