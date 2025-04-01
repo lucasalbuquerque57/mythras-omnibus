@@ -129,6 +129,10 @@ model MythrasStdCharacter {
 
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
+
+  //MythrasStdCombatStyle MythrasStdCombatStyle[]
+
+  //MythrasStdPassions MythrasStdPassions[]
 }
 
 model MythrasStdCharacterPersonal {
@@ -182,7 +186,7 @@ model MythrasStdHitLocation {
   armor           String?
   hp              Int
   hpHistory       Json          // Store as JSON array of change logs
-  ap              Int
+  ap              Int           @default(0)
   apHistory       Json          // Store as JSON array of change logs
 }
 
@@ -192,21 +196,13 @@ model MythrasStdStandardSkill {
   character         MythrasStdCharacter     @relation(fields: [characterId], references: [id])
   name              MythrasStdStandardSkillType
   baseValue         Int
+  totalAddedPoints  Int
+  culturePoints     Int
+  careerPoints      Int
+  bonusPoints       Int
   currentProficiency Int
   isProficient      Boolean
   isFumbled         Boolean       @default(false)
-}
-
-model MythrasStdMagicSkill {
-  id                String        @id @default(cuid())
-  characterId       String
-  character         MythrasStdCharacter     @relation(fields: [characterId], references: [id])
-  name              MythrasStdMagicSkillType
-  baseValue         Int
-  currentProficiency Int
-  isProficient      Boolean
-  isFumbled         Boolean       @default(false)
-  spellType         String        // Could be enum if needed
 }
 
 model MythrasStdProfessionalSkill {
@@ -215,6 +211,10 @@ model MythrasStdProfessionalSkill {
   character         MythrasStdCharacter     @relation(fields: [characterId], references: [id])
   name              MythrasStdProfessionalSkillType
   baseValue         Int
+  totalAddedPoints  Int
+  culturePoints     Int
+  careerPoints      Int
+  bonusPoints       Int
   currentProficiency Int
   isProficient      Boolean
   isFumbled         Boolean       @default(false)
@@ -224,3 +224,56 @@ model MythrasStdProfessionalSkill {
   @@index([characterId])
   @@index([name])
 }
+
+model MythrasStdMagicSkill {
+  id                String        @id @default(cuid())
+  characterId       String
+  character         MythrasStdCharacter     @relation(fields: [characterId], references: [id])
+  name              MythrasStdMagicSkillType
+  baseValue         Int
+  totalAddedPoints  Int
+  culturePoints     Int
+  careerPoints      Int
+  bonusPoints       Int
+  currentProficiency Int
+  isProficient      Boolean
+  isFumbled         Boolean       @default(false)
+  spellType         String        // Could be enum if needed
+}
+
+/*
+model MythrasStdCombatStyle {
+  id                String        @id @default(cuid())
+  characterId       String
+  character         MythrasStdCharacter     @relation(fields: [characterId], references: [id])
+  name              String
+  weapons           String
+  traits            String
+  baseValue         Int
+  totalAddedPoints  Int
+  culturePoints     Int
+  careerPoints      Int
+  bonusPoints       Int
+  currentProficiency Int
+  isProficient      Boolean       @default(true)
+  isFumbled         Boolean       @default(false)
+}
+
+model MythrasStdPassions {
+  id                String        @id @default(cuid())
+  characterId       String
+  character         MythrasStdCharacter     @relation(fields: [characterId], references: [id])
+  name              String
+  about             String
+  baseValue         Int
+  totalAddedPoints  Int
+  culturePoints     Int
+  careerPoints      Int
+  bonusPoints       Int
+  currentProficiency Int
+  isProficient      Boolean       @default(true)
+  isFumbled         Boolean       @default(false)
+}
+
+*/
+

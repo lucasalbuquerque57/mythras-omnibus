@@ -8,5 +8,3 @@ const AuthLayout = ({children} : {children: React.ReactNode}) => {
   );
 };
 export default AuthLayout;
-// bg-gradient-to-tr from-violet-900 to-violet-950
-// bg-gradient-to-tr from-preta to-firefox1

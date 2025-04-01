@@ -33,3 +33,17 @@ export const professionalSkillSchema = baseSkillSchema.extend({
     name: z.nativeEnum(MythrasStdProfessionalSkillType),
     specialty: z.string().optional(),
 });
+
+/*Other stuff that works similarly*/
+
+/*
+export const combatStyleSchema = baseSkillSchema.extend({
+    name: z.string().max(40),
+    weapons: z.string(),
+    traits: z.string().optional(),
+});
+
+export const passionSchema = baseSkillSchema.extend({
+    name: z.string().max(40),
+    about: z.string().optional(),
+});*/

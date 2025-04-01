@@ -4,7 +4,11 @@ import {
     MythrasStdAttributeType,
     MythrasStdHitLocationType,
 } from '@prisma/client';
-import {magicSkillSchema, professionalSkillSchema, standardSkillSchema} from "@/schemas/characters/mythras-std/skills";
+import {
+    magicSkillSchema,
+    professionalSkillSchema,
+    standardSkillSchema,
+} from "@/schemas/characters/mythras-std/skills";
 
 /* MAIN STUFF */
 
@@ -71,75 +75,9 @@ export const MythrasDataSchema = z.object({
     standardSkills: z.array(standardSkillSchema),
     magicSkills: z.array(magicSkillSchema).optional(),
     professionalSkills: z.array(professionalSkillSchema),
-    passion: z.array(
-        z.object({
-            name: z.string().optional(),
-            category: z.string().optional(),
-            baseValue: z.number().int().positive().optional(),
-            currentValue: z.number().int().positive().optional(),
-            initialBoost: z.number().int().optional(),
-        }),
-    ),
+    /*combatStyles: z.array(combatStyleSchema),
+    passions: z.array(passionSchema).optional(),*/
 });
 
 
 export type MythrasCharacterData = z.infer<typeof MythrasDataSchema>;
-
-
-/*
-
-export const Skills = MythrasDataSchema.pick({
-    personal: true,
-}).extend({
-    personal: MythrasDataSchema.shape.personal.pick({
-        name: true,
-        gender: true,
-        species: true,
-        culture: true,
-        homeland: true,
-        career: true,
-    }),
-});
-*/
-
-
-
-// alternative validation, a way to have species specific characteristic validation
-/*
-characteristics: z.array(
-    z.object({
-        name: z.nativeEnum(MythrasStdCharacteristicType),
-        original: z.number().refine((val, ctx) => {
-            const formValues = ctx.parent.parent.parent as z.infer<typeof MythrasDataSchema>;
-            const species = formValues.personal.species as keyof typeof SPECIES_CONFIG;
-            const characteristicName = ctx.parent.name as MythrasStdCharacteristicType;
-
-            if (!(species in SPECIES_CONFIG)) {
-                ctx.addIssue({
-                    code: z.ZodIssueCode.custom,
-                    message: "Invalid species",
-                });
-                return false;
-            }
-
-            const config = SPECIES_CONFIG[species][characteristicName];
-            return val >= config.min && val <= config.max;
-        }, "Invalid value for species"),
-        current: z.number().refine((val, ctx) => {
-            const formValues = ctx.parent.parent.parent as z.infer<typeof MythrasDataSchema>;
-            const species = formValues.personal.species as keyof typeof SPECIES_CONFIG;
-            const characteristicName = ctx.parent.name as MythrasStdCharacteristicType;
-
-            if (!(species in SPECIES_CONFIG)) {
-                ctx.addIssue({
-                    code: z.ZodIssueCode.custom,
-                    message: "Invalid species",
-                });
-                return false;
-            }
-
-            const config = SPECIES_CONFIG[species][characteristicName];
-            return val >= config.min && val <= config.max;
-        }, "Invalid value for species"),
-    }),
-),*/

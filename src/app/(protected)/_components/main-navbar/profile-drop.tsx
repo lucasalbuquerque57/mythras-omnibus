@@ -16,7 +16,8 @@ import {ShieldUser} from "lucide-react";
 export const ProfileDropdowns = () => {
   const user = useCurrentUser();
 
-    return (
+
+  return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-8 w-8 rounded-full">

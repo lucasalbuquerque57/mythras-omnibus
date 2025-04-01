@@ -49,7 +49,8 @@ export const PersonalInfoStep = ({ onSubmit, isPending }: PersonalInfoStepProps)
             standardSkills: [],
             magicSkills: [],
             professionalSkills: [],
-            passion: [],
+            /*combatStyles: [],
+            passions: [],*/
         },
     });
     return (
