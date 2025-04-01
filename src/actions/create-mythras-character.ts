@@ -130,6 +130,36 @@ export const createMythrasCharacter = async (
                         specialty: s.specialty ?? undefined,
                     })),
                 },
+                /*combatStyles: {
+                    create: validation.data.combatStyles.map(s => ({
+                        name: s.name,
+                        weapons: s.weapons,
+                        traits: s.traits,
+                        baseValue: s.baseValue,
+                        currentProficiency: s.currentProficiency,
+                        totalAddedPoints: s.totalAddedPoints ?? 0,
+                        culturePoints: s.culturePoints ?? 0,
+                        careerPoints: s.careerPoints ?? 0,
+                        bonusPoints: s.bonusPoints ?? 0,
+                        isProficient: s.isProficient,
+                        isFumbled: s.isFumbled ?? false,
+                    })),
+                },
+                passions: {
+                    //@ts-expect-error yes it might be undefined, as it is optional
+                    create: validation.data.passions.map(s => ({
+                        name: s.name,
+                        weapons: s.about,
+                        baseValue: s.baseValue,
+                        currentProficiency: s.currentProficiency,
+                        totalAddedPoints: s.totalAddedPoints ?? 0,
+                        culturePoints: s.culturePoints ?? 0,
+                        careerPoints: s.careerPoints ?? 0,
+                        bonusPoints: s.bonusPoints ?? 0,
+                        isProficient: s.isProficient,
+                        isFumbled: s.isFumbled ?? false,
+                    })),
+                },*/
             };
 
             await prisma.mythrasStdCharacter.upsert({
@@ -144,6 +174,8 @@ export const createMythrasCharacter = async (
                     standardSkills: { deleteMany: {}, create: mythrasData.standardSkills.create },
                     magicSkills: { deleteMany: {}, create: mythrasData.magicSkills.create },
                     professionalSkills: { deleteMany: {}, create: mythrasData.professionalSkills.create },
+                    /*combatStyles: { deleteMany: {}, create: mythrasData.combatStyles.create },
+                    passions: { deleteMany: {}, create: mythrasData.passions.create },*/
                 },
             });
 

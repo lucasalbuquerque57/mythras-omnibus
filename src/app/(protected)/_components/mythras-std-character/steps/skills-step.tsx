@@ -23,11 +23,11 @@ interface SkillsStepProps {
 }
 
 export const SkillsStep = ({
-                               initialValues,
-                               onSubmit,
-                               onBack,
-                               isPending,
-                           }: SkillsStepProps) => {
+   initialValues,
+   onSubmit,
+   onBack,
+   isPending,
+}: SkillsStepProps) => {
     // Points pools
     const [baseCulturePoints, setBaseCulturePoints] = useState(100);
     const [baseCareerPoints, setBaseCareerPoints] = useState(100);

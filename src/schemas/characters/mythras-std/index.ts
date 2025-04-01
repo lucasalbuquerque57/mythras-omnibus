@@ -5,8 +5,7 @@ import {
     MythrasStdHitLocationType,
 } from '@prisma/client';
 import {
-    combatStyleSchema,
-    magicSkillSchema, passionSchema,
+    magicSkillSchema,
     professionalSkillSchema,
     standardSkillSchema,
 } from "@/schemas/characters/mythras-std/skills";
@@ -76,8 +75,8 @@ export const MythrasDataSchema = z.object({
     standardSkills: z.array(standardSkillSchema),
     magicSkills: z.array(magicSkillSchema).optional(),
     professionalSkills: z.array(professionalSkillSchema),
-    combatStyles: z.array(combatStyleSchema),
-    passions: z.array(passionSchema).optional(),
+    /*combatStyles: z.array(combatStyleSchema),
+    passions: z.array(passionSchema).optional(),*/
 });
 
 

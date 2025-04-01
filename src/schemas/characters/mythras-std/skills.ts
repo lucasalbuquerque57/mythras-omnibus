@@ -36,6 +36,7 @@ export const professionalSkillSchema = baseSkillSchema.extend({
 
 /*Other stuff that works similarly*/
 
+/*
 export const combatStyleSchema = baseSkillSchema.extend({
     name: z.string().max(40),
     weapons: z.string(),
@@ -45,4 +46,4 @@ export const combatStyleSchema = baseSkillSchema.extend({
 export const passionSchema = baseSkillSchema.extend({
     name: z.string().max(40),
     about: z.string().optional(),
-});
+});*/
