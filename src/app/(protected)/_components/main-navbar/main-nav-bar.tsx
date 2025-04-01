@@ -9,13 +9,14 @@ import {
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 import { ProfileDropdowns } from "@/app/(protected)/_components/main-navbar/profile-drop";
+import {ModeToggle} from "@/app/(protected)/_components/main-navbar/toggle-darkmode";
 
 
 export const NavBar = () => {
   return (
         <nav
             className={cn("fixed top-0 left-0 right-0 z-50 border-b px-4 py-4 h-14",
-                "flex items-center justify-between dark:bg-slate-950 ")}
+                "flex items-center justify-between bg-background")}
         >
           <NavigationMenu>
               <NavigationMenuList>
@@ -76,9 +77,10 @@ export const NavBar = () => {
           </div>*/}
 
           {/*PROFILE PORTION*/}
-
-          <ProfileDropdowns/>
-
+          <div className="flex items-center gap-4">
+            <ModeToggle/>
+            <ProfileDropdowns/>
+          </div>
         </nav>
 
     );
