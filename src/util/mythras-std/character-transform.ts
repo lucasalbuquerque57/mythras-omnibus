@@ -11,6 +11,8 @@ type FullCharacter = Character & {
         standardSkills: MythrasCharacterData["standardSkills"];
         professionalSkills: MythrasCharacterData["professionalSkills"];
         magicSkills: MythrasCharacterData["magicSkills"];
+        combatStyles: MythrasCharacterData["combatStyles"];
+        passions: MythrasCharacterData["passions"];
     };
 };
 
@@ -74,8 +76,7 @@ export const transformCharacter = (
             isProficient: s.isProficient,
             isFumbled: s.isFumbled ?? false,
         })),
-        // @ts-expect-error It is possibly undefined because I want to prevent bugs where people are forced to have MagicSkills
-        magicSkills: details.magicSkills.map(s => ({
+        magicSkills: (details.magicSkills || []).map(s => ({
             name: s.name,
             baseValue: s.baseValue,
             currentProficiency: s.currentProficiency,
@@ -99,6 +100,31 @@ export const transformCharacter = (
             isFumbled: s.isFumbled ?? false,
             specialty: s.specialty ?? undefined,
         })),
-        /*passion: [],*/ // Maintain existing passion structure
+        /*I was getting some errors here only when I accessed Step 2 of character creation, the current code makes this at least empty, not undefined*/
+        combatStyles: (details.combatStyles || []).map(s => ({
+            name: s.name,
+            weapons: s.weapons,
+            traits: s.traits,
+            baseValue: s.baseValue,
+            currentProficiency: s.currentProficiency,
+            totalAddedPoints: s.totalAddedPoints ?? undefined,
+            culturePoints: s.culturePoints ?? undefined,
+            careerPoints: s.careerPoints ?? undefined,
+            bonusPoints: s.bonusPoints ?? undefined,
+            isProficient: s.isProficient,
+            isFumbled: s.isFumbled ?? false,
+        })),
+        passions: (details.passions || []).map(s => ({
+            name: s.name,
+            about: s.about,
+            baseValue: s.baseValue,
+            currentProficiency: s.currentProficiency,
+            totalAddedPoints: s.totalAddedPoints ?? undefined,
+            culturePoints: s.culturePoints ?? undefined,
+            careerPoints: s.careerPoints ?? undefined,
+            bonusPoints: s.bonusPoints ?? undefined,
+            isProficient: s.isProficient,
+            isFumbled: s.isFumbled ?? false,
+        })),
     };
 };

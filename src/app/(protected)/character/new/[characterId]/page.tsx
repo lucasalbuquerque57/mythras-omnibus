@@ -1,7 +1,7 @@
 // app/(protected)/character/new/[characterId]/page.tsx
-import {getCharacterDraft} from "@/actions/get-character-draft";
+import {getMythrasStdCharacterDraft} from "@/actions/mythras-std/get-mythras-std-character-draft";
 import { notFound } from 'next/navigation';
-import {transformCharacter} from "@/util/character-transform";
+import {transformCharacter} from "@/util/mythras-std/character-transform";
 import {NewCharacterWizard} from "@/app/(protected)/_components/mythras-std-character/new-character-wizard";
 import NavBar from "@/app/(protected)/_components/main-navbar/main-nav-bar";
 import React from "react";
@@ -15,7 +15,7 @@ export default async function NewCharacterPage({
     const characterId = resolvedParams.characterId;
 
     try {
-        const character = await getCharacterDraft(characterId);
+        const character = await getMythrasStdCharacterDraft(characterId);
 
         if (!character?.mythrasDetails) {
             return notFound();

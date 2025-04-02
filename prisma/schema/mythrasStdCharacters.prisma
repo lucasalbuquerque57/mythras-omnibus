@@ -126,13 +126,11 @@ model MythrasStdCharacter {
   standardSkills  MythrasStdStandardSkill[]
   magicSkills     MythrasStdMagicSkill[]
   professionalSkills MythrasStdProfessionalSkill[]
+  combatStyles    MythrasStdCombatStyle[]
+  passions        MythrasStdPassions[]
 
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
-
-  //MythrasStdCombatStyle MythrasStdCombatStyle[]
-
-  //MythrasStdPassions MythrasStdPassions[]
 }
 
 model MythrasStdCharacterPersonal {
@@ -241,7 +239,6 @@ model MythrasStdMagicSkill {
   spellType         String        // Could be enum if needed
 }
 
-/*
 model MythrasStdCombatStyle {
   id                String        @id @default(cuid())
   characterId       String
@@ -275,5 +272,4 @@ model MythrasStdPassions {
   isFumbled         Boolean       @default(false)
 }
 
-*/
 

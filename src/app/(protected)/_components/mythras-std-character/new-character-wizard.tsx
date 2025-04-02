@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
 import { z } from 'zod';
-import { createMythrasCharacter } from '@/actions/create-mythras-character';
+import { createMythrasStdCharacter } from '@/actions/mythras-std/create-mythras-std-character';
 import {MythrasCharacterData, MythrasDataSchema } from '@/schemas/characters/mythras-std';
 import { FormError } from '@/components/form-error';
 import { FormSuccess } from '@/components/form-success';
@@ -42,7 +42,7 @@ export const NewCharacterWizard = ({
 
         startTransition(async () => {
             try {
-                const response = await createMythrasCharacter(values);
+                const response = await createMythrasStdCharacter(values);
                 if (response?.success) {
                     setSuccess('Character created successfully!');
                     setFormData(values);
@@ -71,7 +71,7 @@ export const NewCharacterWizard = ({
 
         startTransition(async () => {
             try {
-                const response = await createMythrasCharacter(values, characterId);
+                const response = await createMythrasStdCharacter(values, characterId);
                 if (response?.success) {
                     setSuccess('Character updated successfully!');
                     router.push(`/character/${response.characterId}`);

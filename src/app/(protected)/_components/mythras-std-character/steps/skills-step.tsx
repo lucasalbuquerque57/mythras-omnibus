@@ -327,10 +327,12 @@ export const SkillsStep = ({
 
                 {/* Skills Tabs */}
                 <Tabs defaultValue="standard" className="w-full">
-                    <TabsList className="grid grid-cols-3">
+                    <TabsList className="grid grid-cols-5">
                         <TabsTrigger value="standard">Standard Skills</TabsTrigger>
                         <TabsTrigger value="professional">Professional Skills</TabsTrigger>
                         <TabsTrigger value="magic">Magic Skills</TabsTrigger>
+                        <TabsTrigger value="combatStyle">Combat Styles</TabsTrigger>
+                        <TabsTrigger value="passion">Passions</TabsTrigger>
                     </TabsList>
 
                     {/* Standard Skills */}

@@ -36,14 +36,14 @@ export const professionalSkillSchema = baseSkillSchema.extend({
 
 /*Other stuff that works similarly*/
 
-/*
+
 export const combatStyleSchema = baseSkillSchema.extend({
     name: z.string().max(40),
     weapons: z.string(),
-    traits: z.string().optional(),
+    traits: z.string(), // era p ser opcional, mas para evitar erros no character-transform.ts, eu estou mudando isso
 });
 
 export const passionSchema = baseSkillSchema.extend({
     name: z.string().max(40),
-    about: z.string().optional(),
-});*/
+    about: z.string(),
+});

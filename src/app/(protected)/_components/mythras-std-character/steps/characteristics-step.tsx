@@ -81,10 +81,6 @@ export const CharacteristicsStep = ({
             })),
         );
     };
-    
-    
-    
-    
 
     useEffect(() => {
         const chars = characteristics.reduce((acc, curr) => {
@@ -205,7 +201,7 @@ export const CharacteristicsStep = ({
                         Voltar
                     </Button>
                     <Button type="submit" disabled={isPending}>
-                        Finalizar
+                        Próximo
                     </Button>
                 </div>
             </form>

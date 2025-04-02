@@ -4,7 +4,7 @@
 import { db } from "@/lib/db";
 import "server-only";
 
-export const getCharacterDraft = async (characterId: string) => {
+export const getMythrasStdCharacterDraft = async (characterId: string) => {
     try {
         return await db.character.findUnique({
             where: {
